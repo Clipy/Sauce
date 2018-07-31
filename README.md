@@ -54,7 +54,7 @@ Get key code corresponding to input source
 let keyCode = Sauce.shared.keyCode(with: inputSource, key: .v)
 ```
 
-### Notification
+## Notification
 ### `NSNotification.Name.SauceEnabledKeyboardInputSoucesChanged`
 `SauceEnabledKeyboardInputSoucesChanged` is the same as `kTISNotifyEnabledKeyboardInputSourcesChanged` in Carbon.framework  
 
@@ -62,7 +62,7 @@ let keyCode = Sauce.shared.keyCode(with: inputSource, key: .v)
 `SauceSelectedKeyboardInputSourceChanged` is different from `kTISNotifySelectedKeyboardInputSourceChanged` and is notified only when the input source id has changed.  
 Since it is filtered and notified, please do not use it for the same purpose as normal `kTISNotifySelectedKeyboardInputSourceChanged`.
 
-### Contributing
+## Contributing
 1. Fork it ( https://github.com/Clipy/Sauce/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
