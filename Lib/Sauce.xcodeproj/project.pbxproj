@@ -166,7 +166,7 @@
 				TargetAttributes = {
 					FAA4131F210E2C730097D522 = {
 						CreatedOnToolsVersion = 9.4.1;
-						LastSwiftMigration = 0940;
+						LastSwiftMigration = 1000;
 					};
 					FAA41328210E2C730097D522 = {
 						CreatedOnToolsVersion = 9.4.1;
@@ -384,7 +384,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -411,7 +411,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.clipy-app.Sauce";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};

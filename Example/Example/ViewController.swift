@@ -21,7 +21,8 @@ class ViewController: NSViewController {
     }
     
     @IBAction func buttonTapped(_ sender: Any) {
-        print(Sauce.shared.currentKeyCode(by: .v))
+        guard let keyCode = Sauce.shared.currentKeyCode(by: .v) else { return }
+        print(keyCode)
     }
 
 }
