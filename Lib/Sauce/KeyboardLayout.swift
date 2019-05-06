@@ -33,6 +33,17 @@ final class KeyboardLayout {
         self.distributedNotificationCenter = distributedNotificationCenter
         self.notificationCenter = notificationCenter
         self.currentInputSource = InputSource(source: TISCopyCurrentKeyboardInputSource().takeUnretainedValue())
+        /**
+         *  Known issue1:
+         *  When using TISCopyCurrentASCIICapableKeyboardLayoutInputSource, you can obtain InputSource which always has keyboard layout.
+         *  However, if Dvorak layout and Japanese(en) layout are set, Dvorak layout will always be returned,
+         *  and incorrect values will be returned when using Japanese(en) keyboard as input source.
+         *
+         *  Known issue2:
+         *  When setting only Dvorak layout and Japanese layout,
+         *  Dvorak layout is always set to currentASCIICapableInputSouce,
+         *  so currentASCIICapableKeyCode and currentASCIICapableCharacter always returns to Dvorak layout.
+         **/
         self.currentASCIICapableInputSouce = InputSource(source: TISCopyCurrentASCIICapableKeyboardInputSource().takeUnretainedValue())
         fetchASCIICapableInputSources()
         observeNotifications()
@@ -119,7 +130,13 @@ private extension KeyboardLayout {
 
     func mappingKeyCodes(with source: InputSource) {
         var keyCodes = [Key: CGKeyCode]()
-        // Scan key codes
+        /**
+         *  Scan key codes
+         *
+         *  Known issue:
+         *  For lauout like Japanese(en), kTISPropertyUnicodeKeyLayoutData returns NULL even if it is ASCIICapableInputSource
+         *  Therefore, mapping is not performed when only Japanese is used as a keyboard
+         **/
         guard let layoutData = TISGetInputSourceProperty(source.source, kTISPropertyUnicodeKeyLayoutData) else { return }
         let data = Unmanaged<CFData>.fromOpaque(layoutData).takeUnretainedValue() as Data
 
