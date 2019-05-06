@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "Sauce"
-  s.version      = "1.0.0"
+  s.version      = "1.0.1"
   s.summary      = "Mapping various keyboard layout sources and key codes in macOS. (e.g.: QWERTY, Dvorak)"
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.homepage     = "https://github.com/Clipy/Sauce"
