@@ -162,8 +162,9 @@ private extension KeyboardLayout {
         let maxChars = 256
         var chars = [UniChar](repeating: 0, count: maxChars)
         var length = 0
-        let error = layoutData.withUnsafeBytes {
-            return CoreServices.UCKeyTranslate($0,
+        let error = layoutData.withUnsafeBytes { pointer -> OSStatus in
+            guard let keyboardLayoutPointer = pointer.bindMemory(to: UCKeyboardLayout.self).baseAddress else { return errSecAllocate }
+            return CoreServices.UCKeyTranslate(keyboardLayoutPointer,
                                                UInt16(keyCode),
                                                UInt16(CoreServices.kUCKeyActionDisplay),
                                                UInt32(modifiers),

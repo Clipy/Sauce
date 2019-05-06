@@ -166,7 +166,7 @@
 				TargetAttributes = {
 					FAA4131F210E2C730097D522 = {
 						CreatedOnToolsVersion = 9.4.1;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1020;
 					};
 					FAA41328210E2C730097D522 = {
 						CreatedOnToolsVersion = 9.4.1;
@@ -179,6 +179,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = FAA41316210E2C730097D522;
 			productRefGroup = FAA41321210E2C730097D522 /* Products */;
@@ -384,7 +385,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -411,7 +412,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.clipy-app.Sauce";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -429,7 +430,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.clipy-app.SauceTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -447,7 +448,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.clipy-app.SauceTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
