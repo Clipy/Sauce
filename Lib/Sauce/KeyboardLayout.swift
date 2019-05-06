@@ -84,11 +84,13 @@ extension KeyboardLayout {
         distributedNotificationCenter.addObserver(self,
                                                   selector: #selector(selectedKeyboardInputSourceChanged),
                                                   name: NSNotification.Name(kTISNotifySelectedKeyboardInputSourceChanged as String),
-                                                  object: nil)
+                                                  object: nil,
+                                                  suspensionBehavior: .deliverImmediately)
         distributedNotificationCenter.addObserver(self,
                                                   selector: #selector(enabledKeyboardInputSourcesChanged),
                                                   name: Notification.Name(kTISNotifyEnabledKeyboardInputSourcesChanged as String),
-                                                  object: nil)
+                                                  object: nil,
+                                                  suspensionBehavior: .deliverImmediately)
     }
 
     @objc func selectedKeyboardInputSourceChanged() {
