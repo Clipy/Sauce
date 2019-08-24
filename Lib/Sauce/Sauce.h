@@ -1,9 +1,11 @@
 //
 //  Sauce.h
-//  Sauce
 //
-//  Created by 古林俊佑 on 2018/07/30.
-//  Copyright © 2018年 Clipy Project. All rights reserved.
+//  Sauce
+//  GitHub: https://github.com/clipy
+//  HP: https://clipy-app.com
+//
+//  Copyright © 2015-2019 Clipy Project.
 //
 
 #import <Cocoa/Cocoa.h>
