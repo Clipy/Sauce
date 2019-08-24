@@ -1,12 +1,11 @@
+//
 //  SpecialKeyCode.swift
 //
 //  Sauce
 //  GitHub: https://github.com/clipy
 //  HP: https://clipy-app.com
 //
-//  Created by Econa77 on 2018/07/31.
-//
-//  Copyright © 2018 Clipy Project.
+//  Copyright © 2015-2019 Clipy Project.
 //
 
 import Foundation
