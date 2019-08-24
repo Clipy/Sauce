@@ -8,5 +8,6 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/Clipy/Sauce.git", :tag => "v#{s.version}" }
   s.platform     = :osx, '10.9'
   s.source_files = 'Lib/Sauce/*.swift'
+  s.swift_version = '5.0'
   s.frameworks   = 'Carbon', 'Cocoa'
 end
