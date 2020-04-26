@@ -32,37 +32,44 @@ public final class Sauce {
 
 }
 
+// MARK: - Input Sources
+public extension Sauce {
+    func currentInputSources() -> [InputSource] {
+        return layout.inputSources
+    }
+}
+
 // MARK: - KeyCodes
 public extension Sauce {
     func keyCode(by key: Key) -> CGKeyCode {
-        return currentKeyCode(by: key) ?? currentASCIICapableKeyCode(by: key) ?? key.QWERTYKeyCode
+        return currentKeyCode(by: key) ?? key.QWERTYKeyCode
     }
 
     func currentKeyCode(by key: Key) -> CGKeyCode? {
         return layout.currentKeyCode(by: key)
     }
 
-    func currentASCIICapableKeyCode(by key: Key) -> CGKeyCode? {
-        return layout.currentASCIICapableKeyCode(by: key)
+    func currentKeyCodes() -> [Key: CGKeyCode]? {
+        return layout.currentKeyCodes()
     }
 
     func keyCode(with source: InputSource, key: Key) -> CGKeyCode? {
         return layout.keyCode(with: source, key: key)
     }
 
-    func ASCIICapableInputSources() -> [InputSource] {
-        return layout.ASCIICapableInputSources
+    func keyCodes(with source: InputSource) -> [Key: CGKeyCode]? {
+        return layout.keyCodes(with: source)
     }
 }
 
 // MARK: - Characters
 public extension Sauce {
     func character(by keyCode: Int, carbonModifiers: Int) -> String? {
-        return currentCharacter(by: keyCode, carbonModifiers: carbonModifiers) ?? currentASCIICapableCharacter(by: keyCode, carbonModifiers: carbonModifiers)
+        return currentCharacter(by: keyCode, carbonModifiers: carbonModifiers)
     }
 
     func character(by keyCode: Int, cocoaModifiers: NSEvent.ModifierFlags) -> String? {
-        return currentCharacter(by: keyCode, carbonModifiers: modifierTransformar.carbonFlags(from: cocoaModifiers)) ?? currentASCIICapableCharacter(by: keyCode, carbonModifiers: modifierTransformar.carbonFlags(from: cocoaModifiers))
+        return currentCharacter(by: keyCode, carbonModifiers: modifierTransformar.carbonFlags(from: cocoaModifiers))
     }
 
     func currentCharacter(by keyCode: Int, carbonModifiers: Int) -> String? {
@@ -71,14 +78,6 @@ public extension Sauce {
 
     func currentCharacter(by keyCode: Int, cocoaModifiers: NSEvent.ModifierFlags) -> String? {
         return layout.currentCharacter(by: keyCode, carbonModifiers: modifierTransformar.carbonFlags(from: cocoaModifiers))
-    }
-
-    func currentASCIICapableCharacter(by keyCode: Int, carbonModifiers: Int) -> String? {
-        return layout.currentASCIICapableCharacter(by: keyCode, carbonModifiers: carbonModifiers)
-    }
-
-    func currentASCIICapableCharacter(by keyCode: Int, cocoaModifiers: NSEvent.ModifierFlags) -> String? {
-        return layout.currentASCIICapableCharacter(by: keyCode, carbonModifiers: modifierTransformar.carbonFlags(from: cocoaModifiers))
     }
 
     func character(with source: InputSource, keyCode: Int, carbonModifiers: Int) -> String? {
