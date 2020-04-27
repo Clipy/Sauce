@@ -74,16 +74,16 @@ extension KeyboardLayout {
 
 // MARK: - Characters
 extension KeyboardLayout {
-    func currentCharacter(by keyCode: Int, modifiers: Int) -> String? {
-        return character(with: currentInputSource.source, keyCode: keyCode, modifiers: modifiers)
+    func currentCharacter(by keyCode: Int, carbonModifiers: Int) -> String? {
+        return character(with: currentInputSource.source, keyCode: keyCode, carbonModifiers: carbonModifiers)
     }
 
-    func character(with source: InputSource, keyCode: Int, modifiers: Int) -> String? {
-        return character(with: source.source, keyCode: keyCode, modifiers: modifiers)
+    func character(with source: InputSource, keyCode: Int, carbonModifiers: Int) -> String? {
+        return character(with: source.source, keyCode: keyCode, carbonModifiers: carbonModifiers)
     }
 
-    func currentASCIICapableCharacter(by keyCode: Int, modifiers: Int) -> String? {
-        return character(with: currentASCIICapableInputSouce.source, keyCode: keyCode, modifiers: modifiers)
+    func currentASCIICapableCharacter(by keyCode: Int, carbonModifiers: Int) -> String? {
+        return character(with: currentASCIICapableInputSouce.source, keyCode: keyCode, carbonModifiers: carbonModifiers)
     }
 }
 
@@ -139,23 +139,24 @@ private extension KeyboardLayout {
         let data = Unmanaged<CFData>.fromOpaque(layoutData).takeUnretainedValue() as Data
 
         for i in 0..<128 {
-            guard let character = character(with: data, keyCode: i, modifiers: 0) else { continue }
+            guard let character = character(with: data, keyCode: i, carbonModifiers: 0) else { continue }
             guard let key = Key(character: character) else { continue }
             keyCodes[key] = CGKeyCode(i)
         }
         mappedKeyCodes[source] = keyCodes
     }
 
-    func character(with source: TISInputSource, keyCode: Int, modifiers: Int) -> String? {
+    func character(with source: TISInputSource, keyCode: Int, carbonModifiers: Int) -> String? {
         guard let layoutData = TISGetInputSourceProperty(source, kTISPropertyUnicodeKeyLayoutData) else { return nil }
         let data = Unmanaged<CFData>.fromOpaque(layoutData).takeUnretainedValue() as Data
-        return character(with: data, keyCode: keyCode, modifiers: modifiers)
+        return character(with: data, keyCode: keyCode, carbonModifiers: carbonModifiers)
     }
 
-    func character(with layoutData: Data, keyCode: Int, modifiers: Int) -> String? {
+    func character(with layoutData: Data, keyCode: Int, carbonModifiers: Int) -> String? {
         // In the case of the special key code, it does not depend on the keyboard layout
         if let specialKeyCode = SpecialKeyCode(keyCode: keyCode) { return specialKeyCode.character }
 
+        let modifierKeyState = (carbonModifiers >> 8) & 0xff
         var deadKeyState: UInt32 = 0
         let maxChars = 256
         var chars = [UniChar](repeating: 0, count: maxChars)
@@ -165,7 +166,7 @@ private extension KeyboardLayout {
             return CoreServices.UCKeyTranslate(keyboardLayoutPointer,
                                                UInt16(keyCode),
                                                UInt16(CoreServices.kUCKeyActionDisplay),
-                                               UInt32(modifiers),
+                                               UInt32(modifierKeyState),
                                                UInt32(LMGetKbdType()),
                                                OptionBits(CoreServices.kUCKeyTranslateNoDeadKeysBit),
                                                &deadKeyState,
