@@ -11,7 +11,7 @@ Mapping various keyboard layout sources and key codes in macOS. (e.g.: QWERTY, D
 Only the ANSI-standard US keyboard is defined for the key code defined in Carbon.framework. Therefore, we can obtain only the key code of the QWERTY keyboard layout. (e.g.: `kVK_ANSI_V`)  
 In layout other than QWERTY, (e.g. Dvorak) the virtual key code is different.
 
-|  Keyboard Layout  |  Key  |  Key Code  | 
+|  Keyboard Layout  |  Key  |  Key Code  |
 | :---------------: | :---: | :--------: |
 |      QWERTY       |   v   |      9     |
 |      Dvorak       |   v   |     47     |
@@ -53,13 +53,13 @@ let keyCode = Sauce.shared.keyCode(with: inputSource, key: .v)
 Get the character of the current input source.
 
 ```swift
-let character = Sauce.shared.character(by: keyCode, modifiers: modifiers)
+let character = Sauce.shared.character(by: keyCode, carbonModifiers: modifiers)
 ```
 
 However, since character strings can only be acquired in an ASCII Capable layout, **we recommend using this.**
 
 ```swift
-let character = Sauce.shared.currentASCIICapableCharacter(by: keyCode, modifiers: modifiers)
+let character = Sauce.shared.currentASCIICapableCharacter(by: keyCode, carbonModifiers: modifiers)
 ```
 
 ## Notification
