@@ -4,6 +4,7 @@
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Version](https://img.shields.io/cocoapods/v/Sauce.svg)](http://cocoadocs.org/docsets/Sauce)
 [![Platform](https://img.shields.io/cocoapods/p/Sauce.svg)](http://cocoadocs.org/docsets/Sauce)
+[![SPM supported](https://img.shields.io/badge/SPM-supported-DE5C43.svg?style=flat)](https://swift.org/package-manager)
 
 Mapping various keyboard layout sources and key codes in macOS. (e.g.: QWERTY, Dvorak)
 

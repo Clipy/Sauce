@@ -5,10 +5,11 @@
 //  GitHub: https://github.com/clipy
 //  HP: https://clipy-app.com
 //
-//  Copyright © 2015-2019 Clipy Project.
+//  Copyright © 2015-2020 Clipy Project.
 //
 
 import Foundation
+import AppKit
 
 public extension NSNotification.Name {
     static let SauceSelectedKeyboardInputSourceChanged = Notification.Name("SauceSelectedKeyboardInputSourceChanged")

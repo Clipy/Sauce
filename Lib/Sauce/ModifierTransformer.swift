@@ -10,6 +10,7 @@
 
 import Foundation
 import Carbon
+import AppKit
 
 final class ModifierTransformer {}
 
