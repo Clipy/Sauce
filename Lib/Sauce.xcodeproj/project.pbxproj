@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		095EF0012456ED9A00174829 /* ModifierTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095EF0002456ED9A00174829 /* ModifierTransformer.swift */; };
 		09CDC68A210F044A007DDFE4 /* TISInputSource+Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09CDC689210F044A007DDFE4 /* TISInputSource+Property.swift */; };
 		FA1E407621107B0A0016D710 /* SpecialKeyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1E407521107B0A0016D710 /* SpecialKeyCode.swift */; };
 		FAA4132A210E2C730097D522 /* Sauce.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAA41320210E2C730097D522 /* Sauce.framework */; };
@@ -29,6 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		095EF0002456ED9A00174829 /* ModifierTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifierTransformer.swift; sourceTree = "<group>"; };
 		09CDC689210F044A007DDFE4 /* TISInputSource+Property.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TISInputSource+Property.swift"; sourceTree = "<group>"; };
 		FA1E407521107B0A0016D710 /* SpecialKeyCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialKeyCode.swift; sourceTree = "<group>"; };
 		FAA41320210E2C730097D522 /* Sauce.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Sauce.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -91,6 +93,7 @@
 				09CDC689210F044A007DDFE4 /* TISInputSource+Property.swift */,
 				FAA41366210E2EFB0097D522 /* Key.swift */,
 				FA1E407521107B0A0016D710 /* SpecialKeyCode.swift */,
+				095EF0002456ED9A00174829 /* ModifierTransformer.swift */,
 			);
 			path = Sauce;
 			sourceTree = "<group>";
@@ -220,6 +223,7 @@
 				FAA41365210E2D9B0097D522 /* Sauce.swift in Sources */,
 				FA1E407621107B0A0016D710 /* SpecialKeyCode.swift in Sources */,
 				FAA41367210E2EFB0097D522 /* Key.swift in Sources */,
+				095EF0012456ED9A00174829 /* ModifierTransformer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
