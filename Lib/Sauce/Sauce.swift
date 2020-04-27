@@ -9,6 +9,7 @@
 //
 
 import Foundation
+import AppKit
 
 public extension NSNotification.Name {
     static let SauceSelectedKeyboardInputSourceChanged = Notification.Name("SauceSelectedKeyboardInputSourceChanged")
