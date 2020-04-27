@@ -11,6 +11,8 @@
 import Foundation
 import Carbon
 
+// swiftlint:disable identifier_name
+
 /**
  *  keycodes for keys that are independent of keyboard layout
  *  ref: Carbon.framework

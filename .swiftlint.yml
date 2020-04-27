@@ -30,4 +30,9 @@ opt_in_rules:
 disabled_rules:
   - nesting
   - function_parameter_count
+  - cyclomatic_complexity
+identifier_name:
+  excluded:
+    - id
+    - i
 line_length: 300
