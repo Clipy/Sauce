@@ -14,8 +14,9 @@ import Carbon
 final class KeyboardLayout {
 
     // MARK: - Properties
-    private(set) var currentKeyboardLayoutInputSource: InputSource
-    private(set) var mappedKeyCodes = [InputSource: [Key: CGKeyCode]]()
+    private var currentKeyboardLayoutInputSource: InputSource
+    private var currentASCIICapableInputSouce: InputSource
+    private var mappedKeyCodes = [InputSource: [Key: CGKeyCode]]()
     private(set) var inputSources: [InputSource]
 
     private let distributedNotificationCenter: DistributedNotificationCenter
@@ -26,26 +27,9 @@ final class KeyboardLayout {
         self.distributedNotificationCenter = distributedNotificationCenter
         self.notificationCenter = notificationCenter
         self.currentKeyboardLayoutInputSource = InputSource(source: TISCopyCurrentKeyboardLayoutInputSource().takeUnretainedValue())
+        self.currentASCIICapableInputSouce = InputSource(source: TISCopyCurrentASCIICapableKeyboardInputSource().takeUnretainedValue())
         let tisInputSources = (TISCreateInputSourceList([:] as CFDictionary, false).takeUnretainedValue() as? [TISInputSource]) ?? []
         self.inputSources = tisInputSources.map { InputSource(source: $0) }
-        /**
-         *  Known issue1:
-         *  When using TISCopyCurrentASCIICapableKeyboardLayoutInputSource, you can obtain InputSource which always has keyboard layout.
-         *  However, if Dvorak layout and Japanese(en) layout are set, Dvorak layout will always be returned,
-         *  and incorrect values will be returned when using Japanese(en) keyboard as input source.
-         *
-         *  Known issue2:
-         *  When setting only Dvorak layout and Japanese layout,
-         *  Dvorak layout is always set to currentASCIICapableInputSouce,
-         *  so currentASCIICapableKeyCode and currentASCIICapableCharacter always returns to Dvorak layout.
-         **/
-        /**
-         *  Scan key codes
-         *
-         *  Known issue:
-         *  For lauout like Japanese(en), kTISPropertyUnicodeKeyLayoutData returns NULL even if it is ASCIICapableInputSource
-         *  Therefore, mapping is not performed when only Japanese is used as a keyboard
-         **/
         mappingInputSources()
         mappingKeyCodes(with: currentKeyboardLayoutInputSource)
         observeNotifications()
@@ -83,6 +67,10 @@ extension KeyboardLayout {
         return character(with: currentKeyboardLayoutInputSource.source, keyCode: keyCode, carbonModifiers: carbonModifiers)
     }
 
+    func currentASCIICapableCharacter(by keyCode: Int, carbonModifiers: Int) -> String? {
+        return character(with: currentASCIICapableInputSouce.source, keyCode: keyCode, carbonModifiers: carbonModifiers)
+    }
+
     func character(with source: InputSource, keyCode: Int, carbonModifiers: Int) -> String? {
         return character(with: source.source, keyCode: keyCode, carbonModifiers: carbonModifiers)
     }
@@ -105,6 +93,7 @@ extension KeyboardLayout {
 
     @objc func selectedKeyboardInputSourceChanged() {
         let source = InputSource(source: TISCopyCurrentKeyboardLayoutInputSource().takeUnretainedValue())
+        self.currentASCIICapableInputSouce = InputSource(source: TISCopyCurrentASCIICapableKeyboardInputSource().takeUnretainedValue())
         guard source != currentKeyboardLayoutInputSource else { return }
         self.currentKeyboardLayoutInputSource = source
         notificationCenter.post(name: .SauceSelectedKeyboardInputSourceChanged, object: nil)
