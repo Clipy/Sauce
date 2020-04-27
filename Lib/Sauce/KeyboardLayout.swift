@@ -156,7 +156,7 @@ private extension KeyboardLayout {
         // In the case of the special key code, it does not depend on the keyboard layout
         if let specialKeyCode = SpecialKeyCode(keyCode: keyCode) { return specialKeyCode.character }
 
-        let modifierKeyState = (carbonModifiers >> 8)  & 0xff
+        let modifierKeyState = (carbonModifiers >> 8) & 0xff
         var deadKeyState: UInt32 = 0
         let maxChars = 256
         var chars = [UniChar](repeating: 0, count: maxChars)
