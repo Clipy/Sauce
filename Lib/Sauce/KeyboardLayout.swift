@@ -17,7 +17,7 @@ final class KeyboardLayout {
     private var currentKeyboardLayoutInputSource: InputSource
     private var currentASCIICapableInputSouce: InputSource
     private var mappedKeyCodes = [InputSource: [Key: CGKeyCode]]()
-    private(set) var inputSources = [InputSource] ()
+    private(set) var inputSources = [InputSource]()
 
     private let distributedNotificationCenter: DistributedNotificationCenter
     private let notificationCenter: NotificationCenter
