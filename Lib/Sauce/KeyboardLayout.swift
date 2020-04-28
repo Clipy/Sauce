@@ -17,7 +17,7 @@ final class KeyboardLayout {
     private var currentKeyboardLayoutInputSource: InputSource
     private var currentASCIICapableInputSouce: InputSource
     private var mappedKeyCodes = [InputSource: [Key: CGKeyCode]]()
-    private(set) var inputSources: [InputSource]
+    private(set) var inputSources = [InputSource] ()
 
     private let distributedNotificationCenter: DistributedNotificationCenter
     private let notificationCenter: NotificationCenter
@@ -28,8 +28,6 @@ final class KeyboardLayout {
         self.notificationCenter = notificationCenter
         self.currentKeyboardLayoutInputSource = InputSource(source: TISCopyCurrentKeyboardLayoutInputSource().takeUnretainedValue())
         self.currentASCIICapableInputSouce = InputSource(source: TISCopyCurrentASCIICapableKeyboardInputSource().takeUnretainedValue())
-        let tisInputSources = (TISCreateInputSourceList([:] as CFDictionary, false).takeUnretainedValue() as? [TISInputSource]) ?? []
-        self.inputSources = tisInputSources.map { InputSource(source: $0) }
         mappingInputSources()
         mappingKeyCodes(with: currentKeyboardLayoutInputSource)
         observeNotifications()
@@ -96,9 +94,12 @@ extension KeyboardLayout {
         self.currentASCIICapableInputSouce = InputSource(source: TISCopyCurrentASCIICapableKeyboardInputSource().takeUnretainedValue())
         guard source != currentKeyboardLayoutInputSource else { return }
         self.currentKeyboardLayoutInputSource = source
-        notificationCenter.post(name: .SauceSelectedKeyboardInputSourceChanged, object: nil)
-        guard mappedKeyCodes[source] == nil else { return }
+        guard mappedKeyCodes[source] == nil else {
+            notificationCenter.post(name: .SauceSelectedKeyboardInputSourceChanged, object: nil)
+            return
+        }
         mappingKeyCodes(with: source)
+        notificationCenter.post(name: .SauceSelectedKeyboardInputSourceChanged, object: nil)
     }
 
     @objc func enabledKeyboardInputSourcesChanged() {
