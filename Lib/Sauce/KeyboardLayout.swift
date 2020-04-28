@@ -14,14 +14,10 @@ import Carbon
 final class KeyboardLayout {
 
     // MARK: - Properties
-    private(set) var currentInputSource: InputSource
-    private(set) var currentASCIICapableInputSouce: InputSource
-    private(set) var ASCIICapableInputSources = [InputSource]()
-    private(set) var mappedKeyCodes = [InputSource: [Key: CGKeyCode]]()
-
-    var currentKeyCodes: [Key: CGKeyCode]? {
-        return mappedKeyCodes[currentInputSource]
-    }
+    private var currentKeyboardLayoutInputSource: InputSource
+    private var currentASCIICapableInputSouce: InputSource
+    private var mappedKeyCodes = [InputSource: [Key: CGKeyCode]]()
+    private(set) var inputSources = [InputSource]()
 
     private let distributedNotificationCenter: DistributedNotificationCenter
     private let notificationCenter: NotificationCenter
@@ -30,33 +26,28 @@ final class KeyboardLayout {
     init(distributedNotificationCenter: DistributedNotificationCenter = .default(), notificationCenter: NotificationCenter = .default) {
         self.distributedNotificationCenter = distributedNotificationCenter
         self.notificationCenter = notificationCenter
-        self.currentInputSource = InputSource(source: TISCopyCurrentKeyboardInputSource().takeUnretainedValue())
-        /**
-         *  Known issue1:
-         *  When using TISCopyCurrentASCIICapableKeyboardLayoutInputSource, you can obtain InputSource which always has keyboard layout.
-         *  However, if Dvorak layout and Japanese(en) layout are set, Dvorak layout will always be returned,
-         *  and incorrect values will be returned when using Japanese(en) keyboard as input source.
-         *
-         *  Known issue2:
-         *  When setting only Dvorak layout and Japanese layout,
-         *  Dvorak layout is always set to currentASCIICapableInputSouce,
-         *  so currentASCIICapableKeyCode and currentASCIICapableCharacter always returns to Dvorak layout.
-         **/
+        self.currentKeyboardLayoutInputSource = InputSource(source: TISCopyCurrentKeyboardLayoutInputSource().takeUnretainedValue())
         self.currentASCIICapableInputSouce = InputSource(source: TISCopyCurrentASCIICapableKeyboardInputSource().takeUnretainedValue())
-        fetchASCIICapableInputSources()
+        mappingInputSources()
+        mappingKeyCodes(with: currentKeyboardLayoutInputSource)
         observeNotifications()
     }
 
     deinit {
         distributedNotificationCenter.removeObserver(self)
+        notificationCenter.removeObserver(self)
     }
 
 }
 
 // MARK: - KeyCodes
 extension KeyboardLayout {
+    func currentKeyCodes() -> [Key: CGKeyCode]? {
+        return mappedKeyCodes[currentKeyboardLayoutInputSource]
+    }
+
     func currentKeyCode(by key: Key) -> CGKeyCode? {
-        return currentKeyCodes?[key]
+        return currentKeyCodes()?[key]
     }
 
     func keyCodes(with source: InputSource) -> [Key: CGKeyCode]? {
@@ -66,24 +57,20 @@ extension KeyboardLayout {
     func keyCode(with source: InputSource, key: Key) -> CGKeyCode? {
         return mappedKeyCodes[source]?[key]
     }
-
-    func currentASCIICapableKeyCode(by key: Key) -> CGKeyCode? {
-        return keyCode(with: currentASCIICapableInputSouce, key: key)
-    }
 }
 
 // MARK: - Characters
 extension KeyboardLayout {
     func currentCharacter(by keyCode: Int, carbonModifiers: Int) -> String? {
-        return character(with: currentInputSource.source, keyCode: keyCode, carbonModifiers: carbonModifiers)
-    }
-
-    func character(with source: InputSource, keyCode: Int, carbonModifiers: Int) -> String? {
-        return character(with: source.source, keyCode: keyCode, carbonModifiers: carbonModifiers)
+        return character(with: currentKeyboardLayoutInputSource.source, keyCode: keyCode, carbonModifiers: carbonModifiers)
     }
 
     func currentASCIICapableCharacter(by keyCode: Int, carbonModifiers: Int) -> String? {
         return character(with: currentASCIICapableInputSouce.source, keyCode: keyCode, carbonModifiers: carbonModifiers)
+    }
+
+    func character(with source: InputSource, keyCode: Int, carbonModifiers: Int) -> String? {
+        return character(with: source.source, keyCode: keyCode, carbonModifiers: carbonModifiers)
     }
 }
 
@@ -103,41 +90,38 @@ extension KeyboardLayout {
     }
 
     @objc func selectedKeyboardInputSourceChanged() {
-        let source = InputSource(source: TISCopyCurrentKeyboardInputSource().takeUnretainedValue())
-        guard source != currentInputSource else { return }
-        self.currentInputSource = source
+        let source = InputSource(source: TISCopyCurrentKeyboardLayoutInputSource().takeUnretainedValue())
         self.currentASCIICapableInputSouce = InputSource(source: TISCopyCurrentASCIICapableKeyboardInputSource().takeUnretainedValue())
+        guard source != currentKeyboardLayoutInputSource else { return }
+        self.currentKeyboardLayoutInputSource = source
+        guard mappedKeyCodes[source] == nil else {
+            notificationCenter.post(name: .SauceSelectedKeyboardInputSourceChanged, object: nil)
+            return
+        }
+        mappingKeyCodes(with: source)
         notificationCenter.post(name: .SauceSelectedKeyboardInputSourceChanged, object: nil)
     }
 
     @objc func enabledKeyboardInputSourcesChanged() {
-        fetchASCIICapableInputSources()
+        mappedKeyCodes.removeAll()
+        mappingInputSources()
+        mappingKeyCodes(with: currentKeyboardLayoutInputSource)
         notificationCenter.post(name: .SauceEnabledKeyboardInputSoucesChanged, object: nil)
     }
 }
 
 // MAKR: - Layouts
 private extension KeyboardLayout {
-    func fetchASCIICapableInputSources() {
-        ASCIICapableInputSources = []
-        mappedKeyCodes = [:]
-        guard let sources = TISCreateASCIICapableInputSourceList().takeUnretainedValue() as? [TISInputSource] else { return }
-        ASCIICapableInputSources = sources.map { InputSource(source: $0) }
-        ASCIICapableInputSources.forEach { mappingKeyCodes(with: $0) }
+    func mappingInputSources() {
+        guard let sources = TISCreateInputSourceList([:] as CFDictionary, false).takeUnretainedValue() as? [TISInputSource] else { return }
+        inputSources = sources.map { InputSource(source: $0) }
+        inputSources.forEach { mappingKeyCodes(with: $0) }
     }
 
     func mappingKeyCodes(with source: InputSource) {
-        var keyCodes = [Key: CGKeyCode]()
-        /**
-         *  Scan key codes
-         *
-         *  Known issue:
-         *  For lauout like Japanese(en), kTISPropertyUnicodeKeyLayoutData returns NULL even if it is ASCIICapableInputSource
-         *  Therefore, mapping is not performed when only Japanese is used as a keyboard
-         **/
         guard let layoutData = TISGetInputSourceProperty(source.source, kTISPropertyUnicodeKeyLayoutData) else { return }
         let data = Unmanaged<CFData>.fromOpaque(layoutData).takeUnretainedValue() as Data
-
+        var keyCodes = [Key: CGKeyCode]()
         for i in 0..<128 {
             guard let character = character(with: data, keyCode: i, carbonModifiers: 0) else { continue }
             guard let key = Key(character: character) else { continue }

@@ -38,29 +38,12 @@ Get the key code of the current input source.
 let keyCode = Sauce.shared.keyCode(by: .v)
 ```
 
-Get ASCII capable input source list.
-
-```swift
-let sources = Sauce.shared.ASCIICapableInputSources()
-```
-
-Get key code corresponding to input source.
-
-```swift
-let keyCode = Sauce.shared.keyCode(with: inputSource, key: .v)
-```
-
 ### Character
 Get the character of the current input source.
 
 ```swift
-let character = Sauce.shared.character(by: keyCode, carbonModifiers: modifiers)
-```
-
-However, since character strings can only be acquired in an ASCII Capable layout, **we recommend using this.**
-
-```swift
-let character = Sauce.shared.currentASCIICapableCharacter(by: keyCode, carbonModifiers: modifiers)
+let character = Sauce.shared.character(by: keyCode, carbonModifiers: shiftKey)
+let character = Sauce.shared.character(by: keyCode, cocoaModifiers: [.shift])
 ```
 
 ## Notification
