@@ -32,4 +32,15 @@ extension ModifierTransformer {
         }
         return carbonFlags
     }
+
+    func convertCharactorSupportCarbonModifiers(from carbonModifiers: Int) -> Int {
+        var convertedCarbonModifiers: Int = 0
+        if (carbonModifiers & optionKey) != 0 {
+            convertedCarbonModifiers |= optionKey
+        }
+        if (carbonModifiers & shiftKey) != 0 {
+            convertedCarbonModifiers |= shiftKey
+        }
+        return convertedCarbonModifiers
+    }
 }

@@ -21,11 +21,13 @@ final class KeyboardLayout {
 
     private let distributedNotificationCenter: DistributedNotificationCenter
     private let notificationCenter: NotificationCenter
+    private let modifierTransformer: ModifierTransformer
 
     // MARK: - Initialize
-    init(distributedNotificationCenter: DistributedNotificationCenter = .default(), notificationCenter: NotificationCenter = .default) {
+    init(distributedNotificationCenter: DistributedNotificationCenter = .default(), notificationCenter: NotificationCenter = .default, modifierTransformer: ModifierTransformer = ModifierTransformer()) {
         self.distributedNotificationCenter = distributedNotificationCenter
         self.notificationCenter = notificationCenter
+        self.modifierTransformer = modifierTransformer
         self.currentKeyboardLayoutInputSource = InputSource(source: TISCopyCurrentKeyboardLayoutInputSource().takeUnretainedValue())
         self.currentASCIICapableInputSouce = InputSource(source: TISCopyCurrentASCIICapableKeyboardInputSource().takeUnretainedValue())
         mappingInputSources()
@@ -151,7 +153,7 @@ private extension KeyboardLayout {
         // In the case of the special key code, it does not depend on the keyboard layout
         if let specialKeyCode = SpecialKeyCode(keyCode: keyCode) { return specialKeyCode.character }
 
-        let modifierKeyState = (carbonModifiers >> 8) & 0xff
+        let modifierKeyState = (modifierTransformer.convertCharactorSupportCarbonModifiers(from: carbonModifiers) >> 8) & 0xff
         var deadKeyState: UInt32 = 0
         let maxChars = 256
         var chars = [UniChar](repeating: 0, count: maxChars)
