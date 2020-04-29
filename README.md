@@ -38,6 +38,13 @@ Get the key code of the current input source.
 let keyCode = Sauce.shared.keyCode(by: .v)
 ```
 
+### Key
+Get the `Key` of the current input source.
+
+```swift
+let key = Sauce.shared.key(by: keyCode)
+```
+
 ### Character
 Get the character of the current input source.
 
