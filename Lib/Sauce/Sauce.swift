@@ -62,6 +62,21 @@ public extension Sauce {
     }
 }
 
+// MARK: - Key
+public extension Sauce {
+    func key(by keyCode: Int) -> Key? {
+        return currentKey(by: keyCode) ?? Key(QWERTYKeyCode: keyCode)
+    }
+
+    func currentKey(by keyCode: Int) -> Key? {
+        return layout.currentKey(by: keyCode)
+    }
+
+    func key(with souce: InputSource, keyCode: Int) -> Key? {
+        return layout.key(with: souce, keyCode: keyCode)
+    }
+}
+
 // MARK: - Characters
 public extension Sauce {
     func character(by keyCode: Int, carbonModifiers: Int) -> String? {

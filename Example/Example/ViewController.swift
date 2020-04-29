@@ -23,6 +23,7 @@ class ViewController: NSViewController {
         print(keyCode)
         print(Sauce.shared.character(by: Int(keyCode), cocoaModifiers: []))
         print(Sauce.shared.character(by: Int(keyCode), cocoaModifiers: .shift))
+        print(Sauce.shared.key(by: Int(keyCode)))
     }
 
 }
