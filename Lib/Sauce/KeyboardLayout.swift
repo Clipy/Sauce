@@ -43,11 +43,11 @@ final class KeyboardLayout {
 // MARK: - KeyCodes
 extension KeyboardLayout {
     func currentKeyCodes() -> [Key: CGKeyCode]? {
-        return mappedKeyCodes[currentKeyboardLayoutInputSource]
+        return keyCodes(with: currentKeyboardLayoutInputSource)
     }
 
     func currentKeyCode(by key: Key) -> CGKeyCode? {
-        return currentKeyCodes()?[key]
+        return keyCode(with: currentKeyboardLayoutInputSource, key: key)
     }
 
     func keyCodes(with source: InputSource) -> [Key: CGKeyCode]? {
@@ -59,14 +59,25 @@ extension KeyboardLayout {
     }
 }
 
+// MARK: - Key
+extension KeyboardLayout {
+    func currentKey(by keyCode: Int) -> Key? {
+        return key(with: currentKeyboardLayoutInputSource, keyCode: keyCode)
+    }
+
+    func key(with source: InputSource, keyCode: Int) -> Key? {
+        return mappedKeyCodes[source]?.first(where: { $0.value == CGKeyCode(keyCode) })?.key
+    }
+}
+
 // MARK: - Characters
 extension KeyboardLayout {
     func currentCharacter(by keyCode: Int, carbonModifiers: Int) -> String? {
-        return character(with: currentKeyboardLayoutInputSource.source, keyCode: keyCode, carbonModifiers: carbonModifiers)
+        return character(with: currentKeyboardLayoutInputSource, keyCode: keyCode, carbonModifiers: carbonModifiers)
     }
 
     func currentASCIICapableCharacter(by keyCode: Int, carbonModifiers: Int) -> String? {
-        return character(with: currentASCIICapableInputSouce.source, keyCode: keyCode, carbonModifiers: carbonModifiers)
+        return character(with: currentASCIICapableInputSouce, keyCode: keyCode, carbonModifiers: carbonModifiers)
     }
 
     func character(with source: InputSource, keyCode: Int, carbonModifiers: Int) -> String? {
