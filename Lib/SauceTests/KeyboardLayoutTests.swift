@@ -17,10 +17,11 @@ final class KeyboardLayoutTests: XCTestCase {
     // MARK: - Properties
     private let ABCKeyboardID = "com.apple.keylayout.ABC"
     private let japaneseKeyboardID = "com.apple.inputmethod.Kotoeri.Japanese"
+    private let kotoeriKeyboardID = "com.apple.inputmethod.Kotoeri"
     private let dvorakKeyboardID = "com.apple.keylayout.Dvorak"
     private let modifierTransformer = ModifierTransformer()
     private let QWERTYVKeyCode = 9
-    private let DvorakVKeyCode = 47
+    private let DvorakVKeyCode = 47 // swiftlint:disable:this identifier_name
 
     // MARK: - Tests
     func testKeyCodesForABCKeyboard() {
@@ -68,9 +69,11 @@ final class KeyboardLayoutTests: XCTestCase {
     func testKeyCodesJapanesesAndDvorakOnlyKeyboard() {
         let installedInputSources = fetchInputSource(includeAllInstalled: false)
         let isInstalledJapaneseKeyboard = isInstalledInputSource(id: japaneseKeyboardID)
+        let isInstalledKotoeriKeyboard = isInstalledInputSource(id: kotoeriKeyboardID)
         let isInstalledDvorakKeyboard = isInstalledInputSource(id: dvorakKeyboardID)
         XCTAssertTrue(installInputSource(id: ABCKeyboardID))
         XCTAssertTrue(installInputSource(id: dvorakKeyboardID))
+        XCTAssertTrue(installInputSource(id: kotoeriKeyboardID))
         XCTAssertTrue(installInputSource(id: japaneseKeyboardID))
         XCTAssertTrue(selectInputSource(id: ABCKeyboardID))
         XCTAssertTrue(selectInputSource(id: japaneseKeyboardID))
@@ -96,6 +99,9 @@ final class KeyboardLayoutTests: XCTestCase {
         }
         if !isInstalledDvorakKeyboard {
             uninstallInputSource(id: dvorakKeyboardID)
+        }
+        if !isInstalledKotoeriKeyboard {
+            uninstallInputSource(id: kotoeriKeyboardID)
         }
     }
 
