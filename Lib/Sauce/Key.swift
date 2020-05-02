@@ -78,7 +78,7 @@ public enum Key {
     case keypadSeven
     case keypadEight
     case keypadNine
-    /* keycodes for keys that are independent of keyboard layout*/
+    /* keycodes for keys that are independent of keyboard layout */
     case `return`
     case tab
     case space
@@ -114,6 +114,12 @@ public enum Key {
     case rightArrow
     case downArrow
     case upArrow
+    /* keycodes for JIS keyboard only */
+    case yen
+    case underscore
+    case keypadComma
+    case eisu
+    case kana
 
     // MARK: - Initiazlie
     public init?(character: String) {
@@ -219,6 +225,11 @@ public enum Key {
         case "rightarrow", SpecialKeyCode.rightArrow.character.lowercased(): self = .rightArrow
         case "downarrow", SpecialKeyCode.downArrow.character.lowercased(): self = .downArrow
         case "uparrow", SpecialKeyCode.upArrow.character.lowercased(): self = .upArrow
+        case "¥", SpecialKeyCode.yen.character.lowercased(): self = .yen
+        case "_", SpecialKeyCode.underscore.character.lowercased(): self = .underscore
+        // .keypadComma is omitted because it is not recognizable by a character string.
+        case "英数", SpecialKeyCode.eisu.character.lowercased(): self = .eisu
+        case "かな", SpecialKeyCode.kana.character.lowercased(): self = .kana
         default: return nil
         }
     }
@@ -325,6 +336,11 @@ public enum Key {
         case kVK_RightArrow: self = .rightArrow
         case kVK_DownArrow: self = .downArrow
         case kVK_UpArrow: self = .upArrow
+        case kVK_JIS_Yen: self = .yen
+        case kVK_JIS_Underscore: self = .underscore
+        case kVK_JIS_KeypadComma: self = .keypadComma
+        case kVK_JIS_Eisu: self = .eisu
+        case kVK_JIS_Kana: self = .kana
         default: return nil
         }
     }
@@ -432,6 +448,11 @@ public enum Key {
         case .rightArrow: return CGKeyCode(kVK_RightArrow)
         case .downArrow: return CGKeyCode(kVK_DownArrow)
         case .upArrow: return CGKeyCode(kVK_UpArrow)
+        case .yen: return CGKeyCode(kVK_JIS_Yen)
+        case .underscore: return CGKeyCode(kVK_JIS_Underscore)
+        case .keypadComma: return CGKeyCode(kVK_JIS_KeypadComma)
+        case .eisu: return CGKeyCode(kVK_JIS_Eisu)
+        case .kana: return CGKeyCode(kVK_JIS_Kana)
         }
     }
 
