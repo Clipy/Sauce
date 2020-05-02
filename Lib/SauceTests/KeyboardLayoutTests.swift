@@ -133,7 +133,6 @@ final class KeyboardLayoutTests: XCTestCase {
         let installedInputSources = self.fetchInputSource(includeAllInstalled: false)
         guard let targetInputSource = installedInputSources.first(where: { $0.id == id }) else { return false }
         return TISSelectInputSource(targetInputSource.source) == noErr
-
     }
 
 }
