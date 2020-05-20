@@ -122,7 +122,7 @@ public enum Key {
     case kana
 
     // MARK: - Initiazlie
-    public init?(character: String, virtualKeyCode: Int) {
+    public init?(character: String, virtualKeyCode: Int?) {
         let lowercasedString = character.lowercased()
         switch lowercasedString {
         case "a": self = .a
