@@ -120,6 +120,9 @@ public enum Key {
     case keypadComma
     case eisu
     case kana
+    case atSign
+    case caret
+    case colon
     /* keycodes for ISO keyboard only */
     case section
 
@@ -318,6 +321,9 @@ public enum Key {
              SpecialKeyCode.eisu.character.lowercased(): self = .eisu
         case "かな",
              SpecialKeyCode.kana.character.lowercased(): self = .kana
+        case "@": self = .atSign
+        case "^": self = .caret
+        case ":": self = .colon
         case "§": self = .section
         default: return nil
         }
@@ -430,6 +436,8 @@ public enum Key {
         case kVK_JIS_KeypadComma: self = .keypadComma
         case kVK_JIS_Eisu: self = .eisu
         case kVK_JIS_Kana: self = .kana
+        // .atSign, .caret, .colon is excluded because it uses a duplicate keycode on JIS keyboard only.
+        // For example, .atSign is applied to kVK_ANSI_LeftBracket on a JIS keyboard.
         case kVK_ISO_Section: self = .section
         default: return nil
         }
@@ -543,6 +551,9 @@ public enum Key {
         case .keypadComma: return CGKeyCode(kVK_JIS_KeypadComma)
         case .eisu: return CGKeyCode(kVK_JIS_Eisu)
         case .kana: return CGKeyCode(kVK_JIS_Kana)
+        case .atSign: return CGKeyCode(kVK_ANSI_LeftBracket)
+        case .caret: return CGKeyCode(kVK_ANSI_Equal)
+        case .colon: return CGKeyCode(kVK_ANSI_Quote)
         case .section: return CGKeyCode(kVK_ISO_Section)
         }
     }
