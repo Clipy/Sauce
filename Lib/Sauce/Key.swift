@@ -120,6 +120,8 @@ public enum Key {
     case keypadComma
     case eisu
     case kana
+    /* keycodes for ISO keyboard only */
+    case section
 
     // MARK: - Initiazlie
     public init?(character: String, virtualKeyCode: Int?) {
@@ -318,6 +320,7 @@ public enum Key {
              SpecialKeyCode.eisu.character.lowercased(): self = .eisu
         case "かな",
              SpecialKeyCode.kana.character.lowercased(): self = .kana
+        case "§": self = .section
         default: return nil
         }
     }
@@ -429,6 +432,7 @@ public enum Key {
         case kVK_JIS_KeypadComma: self = .keypadComma
         case kVK_JIS_Eisu: self = .eisu
         case kVK_JIS_Kana: self = .kana
+        case kVK_ISO_Section: self = .section
         default: return nil
         }
     }
@@ -541,6 +545,7 @@ public enum Key {
         case .keypadComma: return CGKeyCode(kVK_JIS_KeypadComma)
         case .eisu: return CGKeyCode(kVK_JIS_Eisu)
         case .kana: return CGKeyCode(kVK_JIS_Kana)
+        case .section: return CGKeyCode(kVK_ISO_Section)
         }
     }
 
