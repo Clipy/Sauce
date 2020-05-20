@@ -175,9 +175,9 @@ public enum Key {
         case "keypaddecimal": self = .keypadDecimal
         case "keypadmultiply": self = .keypadMultiply
         case "keypadplus": self = .keypadPlus
-        case "keypadclear": self = .keypadClear
+        case "keypadclear", SpecialKeyCode.keypadClear.character.lowercased(): self = .keypadClear
         case "keypaddivide": self = .keypadDivide
-        case "keypadenter": self = .keypadEnter
+        case "keypadenter", SpecialKeyCode.keypadEnter.character.lowercased(): self = .keypadEnter
         case "keypadminus": self = .keypadMinus
         case "keypadequals": self = .keypadEquals
         case "keypad0", "keypadzero": self = .keypadZero

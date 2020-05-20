@@ -60,6 +60,8 @@ enum SpecialKeyCode {
     case keypadComma
     case eisu
     case kana
+    case keypadClear
+    case keypadEnter
 
     // MARK: - Initialize
     init?(keyCode: Int) {
@@ -104,6 +106,8 @@ enum SpecialKeyCode {
         case kVK_JIS_KeypadComma: self = .keypadComma
         case kVK_JIS_Eisu: self = .eisu
         case kVK_JIS_Kana: self = .kana
+        case kVK_ANSI_KeypadClear: self = .keypadClear
+        case kVK_ANSI_KeypadEnter: self = .keypadEnter
         default: return nil
         }
     }
@@ -151,6 +155,8 @@ enum SpecialKeyCode {
         case .keypadComma: return ","
         case .eisu: return "英数"
         case .kana: return "かな"
+        case .keypadClear: return 0x2327.string // ⌧
+        case .keypadEnter: return 0x2305.string // ⌅
         }
     }
 }
