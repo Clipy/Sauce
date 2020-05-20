@@ -55,9 +55,6 @@ enum SpecialKeyCode {
     case rightArrow
     case downArrow
     case upArrow
-    case yen
-    case underscore
-    case keypadComma
     case eisu
     case kana
     case keypadClear
@@ -101,9 +98,6 @@ enum SpecialKeyCode {
         case kVK_RightArrow: self = .rightArrow
         case kVK_DownArrow: self = .downArrow
         case kVK_UpArrow: self = .upArrow
-        case kVK_JIS_Yen: self = .yen
-        case kVK_JIS_Underscore: self = .underscore
-        case kVK_JIS_KeypadComma: self = .keypadComma
         case kVK_JIS_Eisu: self = .eisu
         case kVK_JIS_Kana: self = .kana
         case kVK_ANSI_KeypadClear: self = .keypadClear
@@ -150,9 +144,6 @@ enum SpecialKeyCode {
         case .rightArrow: return 0x2192.string // →
         case .downArrow: return 0x2193.string // ↓
         case .upArrow: return 0x2191.string // ↑
-        case .yen: return "¥"
-        case .underscore: return "_"
-        case .keypadComma: return ","
         case .eisu: return "英数"
         case .kana: return "かな"
         case .keypadClear: return 0x2327.string // ⌧

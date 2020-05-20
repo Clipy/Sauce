@@ -311,10 +311,8 @@ public enum Key {
              SpecialKeyCode.downArrow.character.lowercased(): self = .downArrow
         case "uparrow",
              SpecialKeyCode.upArrow.character.lowercased(): self = .upArrow
-        case "¥",
-             SpecialKeyCode.yen.character.lowercased(): self = .yen
-        case "_",
-             SpecialKeyCode.underscore.character.lowercased(): self = .underscore
+        case "¥": self = .yen
+        case "_": self = .underscore
         case "," where virtualKeyCode == kVK_JIS_KeypadComma: self = .keypadComma
         case "英数",
              SpecialKeyCode.eisu.character.lowercased(): self = .eisu
