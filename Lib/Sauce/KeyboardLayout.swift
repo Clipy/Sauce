@@ -138,6 +138,7 @@ private extension KeyboardLayout {
         for i in 0..<128 {
             guard let character = character(with: data, keyCode: i, carbonModifiers: 0) else { continue }
             guard let key = Key(character: character, virtualKeyCode: i) else { continue }
+            guard keyCodes[key] == nil else { continue }
             keyCodes[key] = CGKeyCode(i)
         }
         mappedKeyCodes[source] = keyCodes
