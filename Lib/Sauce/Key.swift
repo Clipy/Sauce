@@ -12,7 +12,7 @@ import Foundation
 import Carbon
 
 // swiftlint:disable file_length function_body_length type_body_length identifier_name
-public enum Key: String, Codable {
+public enum Key: String, Codable, Equatable {
     case a
     case s
     case d
@@ -558,11 +558,4 @@ public enum Key: String, Codable {
         }
     }
 
-}
-
-// MARK: - Equatable
-extension Key: Equatable {
-    public static func == (lhs: Key, rhs: Key) -> Bool {
-        return lhs.QWERTYKeyCode == rhs.QWERTYKeyCode
-    }
 }
