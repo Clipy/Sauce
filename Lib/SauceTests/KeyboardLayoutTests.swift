@@ -12,6 +12,7 @@ import XCTest
 import Carbon
 @testable import Sauce
 
+// swiftlint:disable discarded_notification_center_observer
 final class KeyboardLayoutTests: XCTestCase {
 
     // MARK: - Properties
