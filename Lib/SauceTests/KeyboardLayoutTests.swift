@@ -155,11 +155,13 @@ final class KeyboardLayoutTests: XCTestCase {
         notificationCenter.addObserver(forName: .SauceSelectedKeyboardKeyCodesChanged, object: nil, queue: nil) { _ in
             expectation.fulfill()
         }
-        XCTAssertTrue(selectInputSource(id: dvorakKeyboardID))
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            XCTAssertTrue(self.selectInputSource(id: self.ABCKeyboardID))
+            XCTAssertTrue(self.selectInputSource(id: self.dvorakKeyboardID))
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                XCTAssertTrue(self.selectInputSource(id: self.ABCKeyboardID))
+            }
         }
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 2)
         if !isInstalledABCKeyboard {
             uninstallInputSource(id: ABCKeyboardID)
         }
@@ -188,7 +190,7 @@ final class KeyboardLayoutTests: XCTestCase {
     @discardableResult
     private func uninstallInputSource(id: String) -> Bool {
         let installedInputSources = fetchInputSource(includeAllInstalled: false)
-        guard let targetInputSource = installedInputSources.first(where: { $0.id == id }) else { return false }
+        guard let targetInputSource = installedInputSources.first(where: { $0.id == id }) else { return true }
         return TISDisableInputSource(targetInputSource.source) == noErr
     }
 
