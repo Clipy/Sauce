@@ -12,6 +12,7 @@ import XCTest
 import Carbon
 @testable import Sauce
 
+// swiftlint:disable discarded_notification_center_observer
 final class KeyboardLayoutTests: XCTestCase {
 
     // MARK: - Properties
@@ -28,7 +29,8 @@ final class KeyboardLayoutTests: XCTestCase {
         let isInstalledABCKeyboard = isInstalledInputSource(id: ABCKeyboardID)
         XCTAssertTrue(installInputSource(id: ABCKeyboardID))
         XCTAssertTrue(selectInputSource(id: ABCKeyboardID))
-        let keyboardLayout = KeyboardLayout()
+        let notificationCenter = NotificationCenter()
+        let keyboardLayout = KeyboardLayout(notificationCenter: notificationCenter)
         let vKeyCode = keyboardLayout.currentKeyCode(by: .v)
         XCTAssertEqual(vKeyCode, CGKeyCode(QWERTYVKeyCode))
         let vKey = keyboardLayout.currentKey(by: QWERTYVKeyCode)
@@ -49,7 +51,8 @@ final class KeyboardLayoutTests: XCTestCase {
         let isInstalledDvorakKeyboard = isInstalledInputSource(id: dvorakKeyboardID)
         XCTAssertTrue(installInputSource(id: dvorakKeyboardID))
         XCTAssertTrue(selectInputSource(id: dvorakKeyboardID))
-        let keyboardLayout = KeyboardLayout()
+        let notificationCenter = NotificationCenter()
+        let keyboardLayout = KeyboardLayout(notificationCenter: notificationCenter)
         let vKeyCode = keyboardLayout.currentKeyCode(by: .v)
         XCTAssertEqual(vKeyCode, CGKeyCode(DvorakVKeyCode))
         let vKey = keyboardLayout.currentKey(by: DvorakVKeyCode)
@@ -80,7 +83,8 @@ final class KeyboardLayoutTests: XCTestCase {
         XCTAssertTrue(uninstallInputSource(id: ABCKeyboardID))
         installedInputSources.filter { $0.id != japaneseKeyboardID && $0.id != dvorakKeyboardID && !$0.id.contains("Japanese") && !$0.id.contains("Kotoeri") }
             .forEach { uninstallInputSource(id: $0.id) }
-        let keyboardLayout = KeyboardLayout()
+        let notificationCenter = NotificationCenter()
+        let keyboardLayout = KeyboardLayout(notificationCenter: notificationCenter)
         let vKeyCode = keyboardLayout.currentKeyCode(by: .v)
         XCTAssertEqual(vKeyCode, CGKeyCode(QWERTYVKeyCode))
         let vKey = keyboardLayout.currentKey(by: QWERTYVKeyCode)
@@ -105,6 +109,67 @@ final class KeyboardLayoutTests: XCTestCase {
         }
     }
 
+    func testInputSourceChangedNotification() {
+        let isInstalledABCKeyboard = isInstalledInputSource(id: ABCKeyboardID)
+        let isInstalledDvorakKeyboard = isInstalledInputSource(id: dvorakKeyboardID)
+        XCTAssertTrue(installInputSource(id: ABCKeyboardID))
+        XCTAssertTrue(uninstallInputSource(id: dvorakKeyboardID))
+        XCTAssertTrue(selectInputSource(id: ABCKeyboardID))
+        let notificationCenter = NotificationCenter()
+        let keyboardLayout = KeyboardLayout(notificationCenter: notificationCenter)
+        let selectedExpectation = XCTestExpectation(description: "Selected Keycobard Input Source Changed")
+        selectedExpectation.expectedFulfillmentCount = 2
+        selectedExpectation.assertForOverFulfill = true
+        notificationCenter.addObserver(forName: .SauceSelectedKeyboardInputSourceChanged, object: nil, queue: nil) { _ in
+            selectedExpectation.fulfill()
+        }
+        let enabledExpectation = XCTestExpectation(description: "Enabled Keycobard Input Source Changed")
+        notificationCenter.addObserver(forName: .SauceEnabledKeyboardInputSoucesChanged, object: nil, queue: nil) { _ in
+            enabledExpectation.fulfill()
+        }
+        XCTAssertTrue(installInputSource(id: dvorakKeyboardID))
+        XCTAssertTrue(selectInputSource(id: dvorakKeyboardID))
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            XCTAssertTrue(self.selectInputSource(id: self.ABCKeyboardID))
+        }
+        wait(for: [selectedExpectation, enabledExpectation], timeout: 2)
+        if !isInstalledABCKeyboard {
+            uninstallInputSource(id: ABCKeyboardID)
+        }
+        if !isInstalledDvorakKeyboard {
+            uninstallInputSource(id: dvorakKeyboardID)
+        }
+    }
+
+    func testKeyCodesChangedNotification() {
+        let isInstalledABCKeyboard = isInstalledInputSource(id: ABCKeyboardID)
+        let isInstalledDvorakKeyboard = isInstalledInputSource(id: dvorakKeyboardID)
+        XCTAssertTrue(installInputSource(id: ABCKeyboardID))
+        XCTAssertTrue(installInputSource(id: dvorakKeyboardID))
+        XCTAssertTrue(selectInputSource(id: ABCKeyboardID))
+        let notificationCenter = NotificationCenter()
+        let keyboardLayout = KeyboardLayout(notificationCenter: notificationCenter)
+        let expectation = XCTestExpectation(description: "Selected Keycobard Key Codes Changed")
+        expectation.expectedFulfillmentCount = 2
+        expectation.assertForOverFulfill = true
+        notificationCenter.addObserver(forName: .SauceSelectedKeyboardKeyCodesChanged, object: nil, queue: nil) { _ in
+            expectation.fulfill()
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            XCTAssertTrue(self.selectInputSource(id: self.dvorakKeyboardID))
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                XCTAssertTrue(self.selectInputSource(id: self.ABCKeyboardID))
+            }
+        }
+        wait(for: [expectation], timeout: 2)
+        if !isInstalledABCKeyboard {
+            uninstallInputSource(id: ABCKeyboardID)
+        }
+        if !isInstalledDvorakKeyboard {
+            uninstallInputSource(id: dvorakKeyboardID)
+        }
+    }
+
     // MARK: - Util
     private func fetchInputSource(includeAllInstalled: Bool) -> [InputSource] {
         guard let sources = TISCreateInputSourceList([:] as CFDictionary, includeAllInstalled).takeUnretainedValue() as? [TISInputSource] else { return [] }
@@ -125,10 +190,11 @@ final class KeyboardLayoutTests: XCTestCase {
     @discardableResult
     private func uninstallInputSource(id: String) -> Bool {
         let installedInputSources = fetchInputSource(includeAllInstalled: false)
-        guard let targetInputSource = installedInputSources.first(where: { $0.id == id }) else { return false }
+        guard let targetInputSource = installedInputSources.first(where: { $0.id == id }) else { return true }
         return TISDisableInputSource(targetInputSource.source) == noErr
     }
 
+    @discardableResult
     private func selectInputSource(id: String) -> Bool {
         let installedInputSources = self.fetchInputSource(includeAllInstalled: false)
         guard let targetInputSource = installedInputSources.first(where: { $0.id == id }) else { return false }
