@@ -8,7 +8,13 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+    
+    - uses: actions/checkout@v2
+      with:
+        repository: Econa77/Mint
+        ref: feature/overwrite-options
+        path: mint
 
     - name: Setup ruby
       uses: actions/setup-ruby@v1
@@ -26,24 +32,30 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-gem-
 
-    - name: Cache Mint packages
+    - name: Cache Mint Builds
       uses: actions/cache@v1
       with:
         path: ${{ env.MINT_PATH }}
-        key: ${{ runner.os }}-mint-${{ hashFiles('**/Mintfile') }}
+        key: ${{ runner.os }}-mint-build-${{ env.SWIFTLINT_VERSION }}
         restore-keys: |
-          ${{ runner.os }}-mint-
+          ${{ runner.os }}-mint-build-
+            
+    - name: Cache Mint Commands
+      uses: actions/cache@v1
+      with:
+        path: ${{ env.MINT_LINK_PATH }}
+        key: ${{ runner.os }}-mint-command-${{ env.SWIFTLINT_VERSION }}
+        restore-keys: |
+          ${{ runner.os }}-mint-command-
 
     - name: Bundle install
       run: |
         gem install bundler
         bundle config path vendor/bundle
         bundle install --jobs 4 --retry 3
-
-    - name: Install Mint and Packages
-      run: |
-        brew install mint
-        mint bootstrap --link
+        
+    - name: Install swiftlint by forked mint
+      run: cd mint && swift run mint install realm/SwiftLint@${{ env.SWIFTLINT_VERSION }} -o y && cd ../
 
     - name: Run Danger
       run: bundle exec danger
@@ -51,4 +63,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     env:
-      MINT_PATH: mint
+      MINT_PATH: ${{ github.workspace }}/mint
+      MINT_LINK_PATH: ${{ github.workspace }}/mint/bin
+      SWIFTLINT_VERSION: 0.39.1
