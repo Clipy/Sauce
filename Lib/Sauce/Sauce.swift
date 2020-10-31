@@ -73,8 +73,8 @@ public extension Sauce {
         return layout.currentKey(by: keyCode)
     }
 
-    func key(with souce: InputSource, keyCode: Int) -> Key? {
-        return layout.key(with: souce, keyCode: keyCode)
+    func key(with source: InputSource, keyCode: Int) -> Key? {
+        return layout.key(with: source, keyCode: keyCode)
     }
 }
 
