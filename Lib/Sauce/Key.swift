@@ -245,6 +245,8 @@ public enum Key: String, Codable, Equatable {
              "keypadnine",
              "9" where virtualKeyCode == kVK_ANSI_Keypad9: self = .keypadNine
         case "return",
+             "\r", // NSMenuItem.keyEquivalent for return key
+             "\n",
              SpecialKeyCode.return.character.lowercased(): self = .return
         case "tab",
              SpecialKeyCode.tab.character.lowercased(): self = .tab
