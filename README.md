@@ -36,22 +36,22 @@ github "Clipy/Sauce"
 Get the key code of the current input source.
 
 ```swift
-let keyCode = Sauce.shared.keyCode(by: .v)
+let keyCode = Sauce.shared.keyCode(for: .v)
 ```
 
 ### Key
 Get the `Key` of the current input source.
 
 ```swift
-let key = Sauce.shared.key(by: keyCode)
+let key = Sauce.shared.key(for: keyCode)
 ```
 
 ### Character
 Get the character of the current input source.
 
 ```swift
-let character = Sauce.shared.character(by: keyCode, carbonModifiers: shiftKey)
-let character = Sauce.shared.character(by: keyCode, cocoaModifiers: [.shift])
+let character = Sauce.shared.character(for: keyCode, carbonModifiers: shiftKey)
+let character = Sauce.shared.character(for: keyCode, cocoaModifiers: [.shift])
 ```
 
 ## Notification
