@@ -18,6 +18,6 @@ extension NSMenuItem {
         let keyEquivalent = !self.userKeyEquivalent.isEmpty
             ? self.userKeyEquivalent
             : self.keyEquivalent
-        return Key(rawValue: keyEquivalent)
+        return Key(character: keyEquivalent, virtualKeyCode: nil)
     }
 }
