@@ -19,11 +19,11 @@ class ViewController: NSViewController {
     }
     
     @IBAction func buttonTapped(_ sender: Any) {
-        guard let keyCode = Sauce.shared.currentKeyCode(by: .v) else { return }
+        guard let keyCode = Sauce.shared.currentKeyCode(for: .v) else { return }
         print(keyCode)
-        print(Sauce.shared.character(by: Int(keyCode), cocoaModifiers: []))
-        print(Sauce.shared.character(by: Int(keyCode), cocoaModifiers: .shift))
-        print(Sauce.shared.key(by: Int(keyCode)))
+        print(Sauce.shared.character(for: Int(keyCode), cocoaModifiers: []))
+        print(Sauce.shared.character(for: Int(keyCode), cocoaModifiers: .shift))
+        print(Sauce.shared.key(for: Int(keyCode)))
     }
 
 }

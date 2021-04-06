@@ -48,7 +48,7 @@ extension KeyboardLayout {
         return keyCodes(with: currentKeyboardLayoutInputSource)
     }
 
-    func currentKeyCode(by key: Key) -> CGKeyCode? {
+    func currentKeyCode(for key: Key) -> CGKeyCode? {
         return keyCode(with: currentKeyboardLayoutInputSource, key: key)
     }
 
@@ -63,7 +63,7 @@ extension KeyboardLayout {
 
 // MARK: - Key
 extension KeyboardLayout {
-    func currentKey(by keyCode: Int) -> Key? {
+    func currentKey(for keyCode: Int) -> Key? {
         return key(with: currentKeyboardLayoutInputSource, keyCode: keyCode)
     }
 
@@ -74,11 +74,11 @@ extension KeyboardLayout {
 
 // MARK: - Characters
 extension KeyboardLayout {
-    func currentCharacter(by keyCode: Int, carbonModifiers: Int) -> String? {
+    func currentCharacter(for keyCode: Int, carbonModifiers: Int) -> String? {
         return character(with: currentKeyboardLayoutInputSource, keyCode: keyCode, carbonModifiers: carbonModifiers)
     }
 
-    func currentASCIICapableCharacter(by keyCode: Int, carbonModifiers: Int) -> String? {
+    func currentASCIICapableCharacter(for keyCode: Int, carbonModifiers: Int) -> String? {
         return character(with: currentASCIICapableInputSouce, keyCode: keyCode, carbonModifiers: carbonModifiers)
     }
 

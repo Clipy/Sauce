@@ -47,7 +47,7 @@ public extension Sauce {
     }
 
     func currentKeyCode(for key: Key) -> CGKeyCode? {
-        return layout.currentKeyCode(by: key)
+        return layout.currentKeyCode(for: key)
     }
 
     func currentKeyCodes() -> [Key: CGKeyCode]? {
@@ -70,7 +70,7 @@ public extension Sauce {
     }
 
     func currentKey(for keyCode: Int) -> Key? {
-        return layout.currentKey(by: keyCode)
+        return layout.currentKey(for: keyCode)
     }
 
     func key(with souce: InputSource, keyCode: Int) -> Key? {
@@ -89,7 +89,7 @@ public extension Sauce {
     }
 
     func currentCharacter(for keyCode: Int, carbonModifiers: Int) -> String? {
-        return layout.currentCharacter(by: keyCode, carbonModifiers: carbonModifiers)
+        return layout.currentCharacter(for: keyCode, carbonModifiers: carbonModifiers)
     }
 
     func currentCharacter(for keyCode: Int, cocoaModifiers: NSEvent.ModifierFlags) -> String? {
@@ -97,7 +97,7 @@ public extension Sauce {
     }
 
     func currentASCIICapableCharacter(for keyCode: Int, carbonModifiers: Int) -> String? {
-        return layout.currentASCIICapableCharacter(by: keyCode, carbonModifiers: carbonModifiers)
+        return layout.currentASCIICapableCharacter(for: keyCode, carbonModifiers: carbonModifiers)
     }
 
     func currentASCIICapableCharacter(for keyCode: Int, cocoaModifiers: NSEvent.ModifierFlags) -> String? {
