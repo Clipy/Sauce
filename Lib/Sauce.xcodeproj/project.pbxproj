@@ -11,6 +11,7 @@
 		095EF0012456ED9A00174829 /* ModifierTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095EF0002456ED9A00174829 /* ModifierTransformer.swift */; };
 		09CDC68A210F044A007DDFE4 /* TISInputSource+Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09CDC689210F044A007DDFE4 /* TISInputSource+Property.swift */; };
 		50582477261C6F1F00AD2DD8 /* NSMenuItem+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50582476261C6F1F00AD2DD8 /* NSMenuItem+Key.swift */; };
+		5058247B261C6FA400AD2DD8 /* NSMenuItem+KeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5058247A261C6FA400AD2DD8 /* NSMenuItem+KeyTests.swift */; };
 		FA1E407621107B0A0016D710 /* SpecialKeyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1E407521107B0A0016D710 /* SpecialKeyCode.swift */; };
 		FAA4132A210E2C730097D522 /* Sauce.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAA41320210E2C730097D522 /* Sauce.framework */; };
 		FAA41331210E2C730097D522 /* Sauce.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA41323210E2C730097D522 /* Sauce.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -35,6 +36,7 @@
 		095EF0002456ED9A00174829 /* ModifierTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifierTransformer.swift; sourceTree = "<group>"; };
 		09CDC689210F044A007DDFE4 /* TISInputSource+Property.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TISInputSource+Property.swift"; sourceTree = "<group>"; };
 		50582476261C6F1F00AD2DD8 /* NSMenuItem+Key.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMenuItem+Key.swift"; sourceTree = "<group>"; };
+		5058247A261C6FA400AD2DD8 /* NSMenuItem+KeyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMenuItem+KeyTests.swift"; sourceTree = "<group>"; };
 		FA1E407521107B0A0016D710 /* SpecialKeyCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialKeyCode.swift; sourceTree = "<group>"; };
 		FAA41320210E2C730097D522 /* Sauce.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Sauce.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAA41323210E2C730097D522 /* Sauce.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sauce.h; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				0909EBCF245D5C9E00ABA339 /* KeyboardLayoutTests.swift */,
+				5058247A261C6FA400AD2DD8 /* NSMenuItem+KeyTests.swift */,
 				FAA41330210E2C730097D522 /* Info.plist */,
 			);
 			path = SauceTests;
@@ -235,6 +238,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5058247B261C6FA400AD2DD8 /* NSMenuItem+KeyTests.swift in Sources */,
 				0909EBD0245D5C9E00ABA339 /* KeyboardLayoutTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
