@@ -124,7 +124,7 @@ final class KeyboardLayoutTests: XCTestCase {
             selectedExpectation.fulfill()
         }
         let enabledExpectation = XCTestExpectation(description: "Enabled Keycobard Input Source Changed")
-        notificationCenter.addObserver(forName: .SauceEnabledKeyboardInputSoucesChanged, object: nil, queue: nil) { _ in
+        notificationCenter.addObserver(forName: .SauceEnabledKeyboardInputSourcesChanged, object: nil, queue: nil) { _ in
             enabledExpectation.fulfill()
         }
         XCTAssertTrue(installInputSource(id: dvorakKeyboardID))

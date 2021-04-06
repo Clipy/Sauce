@@ -15,7 +15,7 @@ final class KeyboardLayout {
 
     // MARK: - Properties
     private var currentKeyboardLayoutInputSource: InputSource
-    private var currentASCIICapableInputSouce: InputSource
+    private var currentASCIICapableInputSource: InputSource
     private var mappedKeyCodes = [InputSource: [Key: CGKeyCode]]()
     private(set) var inputSources = [InputSource]()
 
@@ -29,7 +29,7 @@ final class KeyboardLayout {
         self.notificationCenter = notificationCenter
         self.modifierTransformer = modifierTransformer
         self.currentKeyboardLayoutInputSource = InputSource(source: TISCopyCurrentKeyboardLayoutInputSource().takeUnretainedValue())
-        self.currentASCIICapableInputSouce = InputSource(source: TISCopyCurrentASCIICapableKeyboardInputSource().takeUnretainedValue())
+        self.currentASCIICapableInputSource = InputSource(source: TISCopyCurrentASCIICapableKeyboardInputSource().takeUnretainedValue())
         mappingInputSources()
         mappingKeyCodes(with: currentKeyboardLayoutInputSource)
         observeNotifications()
@@ -79,7 +79,7 @@ extension KeyboardLayout {
     }
 
     func currentASCIICapableCharacter(for keyCode: Int, carbonModifiers: Int) -> String? {
-        return character(with: currentASCIICapableInputSouce, keyCode: keyCode, carbonModifiers: carbonModifiers)
+        return character(with: currentASCIICapableInputSource, keyCode: keyCode, carbonModifiers: carbonModifiers)
     }
 
     func character(with source: InputSource, keyCode: Int, carbonModifiers: Int) -> String? {
@@ -104,7 +104,7 @@ extension KeyboardLayout {
 
     @objc func selectedKeyboardInputSourceChanged() {
         let source = InputSource(source: TISCopyCurrentKeyboardLayoutInputSource().takeUnretainedValue())
-        self.currentASCIICapableInputSouce = InputSource(source: TISCopyCurrentASCIICapableKeyboardInputSource().takeUnretainedValue())
+        self.currentASCIICapableInputSource = InputSource(source: TISCopyCurrentASCIICapableKeyboardInputSource().takeUnretainedValue())
         guard source != currentKeyboardLayoutInputSource else { return }
         let previousKeyboardLayoutInputSource = currentKeyboardLayoutInputSource
         self.currentKeyboardLayoutInputSource = source
@@ -122,7 +122,7 @@ extension KeyboardLayout {
         mappedKeyCodes.removeAll()
         mappingInputSources()
         mappingKeyCodes(with: currentKeyboardLayoutInputSource)
-        notificationCenter.post(name: .SauceEnabledKeyboardInputSoucesChanged, object: nil)
+        notificationCenter.post(name: .SauceEnabledKeyboardInputSourcesChanged, object: nil)
     }
 
     private func notifyKeyCodesChangedIfNeeded(previous: InputSource, current: InputSource) {

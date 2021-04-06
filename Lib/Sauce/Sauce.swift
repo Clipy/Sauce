@@ -13,7 +13,7 @@ import AppKit
 
 public extension NSNotification.Name {
     static let SauceSelectedKeyboardInputSourceChanged = Notification.Name("SauceSelectedKeyboardInputSourceChanged")
-    static let SauceEnabledKeyboardInputSoucesChanged = Notification.Name("SauceEnabledKeyboardInputSoucesChanged")
+    static let SauceEnabledKeyboardInputSourcesChanged = Notification.Name("SauceEnabledKeyboardInputSourcesChanged")
     static let SauceSelectedKeyboardKeyCodesChanged = Notification.Name("SauceSelectedKeyboardKeyCodesChanged")
 }
 
@@ -73,8 +73,8 @@ public extension Sauce {
         return layout.currentKey(for: keyCode)
     }
 
-    func key(with souce: InputSource, keyCode: Int) -> Key? {
-        return layout.key(with: souce, keyCode: keyCode)
+    func key(with source: InputSource, keyCode: Int) -> Key? {
+        return layout.key(with: source, keyCode: keyCode)
     }
 }
 

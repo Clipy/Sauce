@@ -55,8 +55,8 @@ let character = Sauce.shared.character(for: keyCode, cocoaModifiers: [.shift])
 ```
 
 ## Notification
-### `NSNotification.Name.SauceEnabledKeyboardInputSoucesChanged`
-`SauceEnabledKeyboardInputSoucesChanged` is the same as `kTISNotifyEnabledKeyboardInputSourcesChanged` in Carbon.framework  
+### `NSNotification.Name.SauceEnabledKeyboardInputSourcesChanged`
+`SauceEnabledKeyboardInputSourcesChanged` is the same as `kTISNotifyEnabledKeyboardInputSourcesChanged` in Carbon.framework  
 
 ### `NSNotification.Name.SauceSelectedKeyboardInputSourceChanged`
 `SauceSelectedKeyboardInputSourceChanged` is different from `kTISNotifySelectedKeyboardInputSourceChanged` and is notified only when the input source id has changed.  
