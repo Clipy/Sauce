@@ -3,8 +3,8 @@
 [![Release version](https://img.shields.io/github/release/Clipy/Sauce.svg)](https://github.com/Clipy/Sauce/releases/latest)
 [![License: MIT](https://img.shields.io/github/license/Clipy/Sauce.svg)](https://github.com/Clipy/Sauce/blob/master/LICENSE)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-[![Version](https://img.shields.io/cocoapods/v/Sauce.svg)](http://cocoadocs.org/docsets/Sauce)
-[![Platform](https://img.shields.io/cocoapods/p/Sauce.svg)](http://cocoadocs.org/docsets/Sauce)
+[![Version](https://img.shields.io/cocoapods/v/Sauce.svg)](https://cocoapods.org/pods/Sauce)
+[![Platform](https://img.shields.io/cocoapods/p/Sauce.svg)](https://cocoapods.org/pods/Sauce)
 [![SPM supported](https://img.shields.io/badge/SPM-supported-DE5C43.svg?style=flat)](https://swift.org/package-manager)
 
 Mapping various keyboard layout sources and key codes in macOS. (e.g.: QWERTY, Dvorak)
@@ -61,10 +61,3 @@ let character = Sauce.shared.character(for: keyCode, cocoaModifiers: [.shift])
 ### `NSNotification.Name.SauceSelectedKeyboardInputSourceChanged`
 `SauceSelectedKeyboardInputSourceChanged` is different from `kTISNotifySelectedKeyboardInputSourceChanged` and is notified only when the input source id has changed.  
 Since it is filtered and notified, please do not use it for the same purpose as normal `kTISNotifySelectedKeyboardInputSourceChanged`.
-
-## Contributing
-1. Fork it ( https://github.com/Clipy/Sauce/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
