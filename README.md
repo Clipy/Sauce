@@ -61,3 +61,6 @@ let character = Sauce.shared.character(for: keyCode, cocoaModifiers: [.shift])
 ### `NSNotification.Name.SauceSelectedKeyboardInputSourceChanged`
 `SauceSelectedKeyboardInputSourceChanged` is different from `kTISNotifySelectedKeyboardInputSourceChanged` and is notified only when the input source id has changed.  
 Since it is filtered and notified, please do not use it for the same purpose as normal `kTISNotifySelectedKeyboardInputSourceChanged`.
+
+### `NSNotification.Name.SauceSelectedKeyboardKeyCodesChanged`
+By using this Notification, can detect when the setting changes with the same keyboard layout, when the input source changes from QWERTY to Dvorak, and so on.
