@@ -17,9 +17,21 @@ final class KeyboardLayoutTests: XCTestCase {
 
     // MARK: - Properties
     private let ABCKeyboardID = "com.apple.keylayout.ABC"
-    private let japaneseKeyboardID = "com.apple.inputmethod.Kotoeri.Japanese"
-    private let kotoeriKeyboardID = "com.apple.inputmethod.Kotoeri"
     private let dvorakKeyboardID = "com.apple.keylayout.Dvorak"
+    private var japaneseKeyboardID: String {
+        if #available(macOS 11.0, *) {
+            return "com.apple.inputmethod.Kotoeri.RomajiTyping.Japanese"
+        } else {
+            return "com.apple.inputmethod.Kotoeri.Japanese"
+        }
+    }
+    private var kotoeriKeyboardID: String {
+        if #available(macOS 11.0, *) {
+            return "com.apple.inputmethod.Kotoeri.RomajiTyping"
+        } else {
+            return "com.apple.inputmethod.Kotoeri"
+        }
+    }
     private let modifierTransformer = ModifierTransformer()
     private let QWERTYVKeyCode = 9
     private let DvorakVKeyCode = 47 // swiftlint:disable:this identifier_name
@@ -200,5 +212,4 @@ final class KeyboardLayoutTests: XCTestCase {
         guard let targetInputSource = installedInputSources.first(where: { $0.id == id }) else { return false }
         return TISSelectInputSource(targetInputSource.source) == noErr
     }
-
 }
