@@ -26,7 +26,9 @@ public final class InputSource {
 
     // MARK: - Initialize
     init(source: TISInputSource) {
-        self.id = source.value(forProperty: kTISPropertyInputSourceID, type: String.self)!
+        // There are some custom input sources that cannot get a SourceID, so if cannot get an SourceID, use a UUID.
+        // ref: https://github.com/Clipy/Sauce/pull/40
+        self.id = source.value(forProperty: kTISPropertyInputSourceID, type: String.self) ?? UUID().uuidString
         self.modeID = source.value(forProperty: kTISPropertyInputModeID, type: String.self)
         self.isASCIICapable = source.value(forProperty: kTISPropertyInputSourceIsASCIICapable, type: Bool.self) ?? false
         self.isEnableCapable = source.value(forProperty: kTISPropertyInputSourceIsEnableCapable, type: Bool.self) ?? false

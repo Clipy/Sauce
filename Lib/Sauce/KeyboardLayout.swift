@@ -133,7 +133,7 @@ extension KeyboardLayout {
     }
 }
 
-// MAKR: - Layouts
+// MARK: - Layouts
 private extension KeyboardLayout {
     func mappingInputSources() {
         guard let sources = TISCreateInputSourceList([:] as CFDictionary, false).takeUnretainedValue() as? [TISInputSource] else { return }
