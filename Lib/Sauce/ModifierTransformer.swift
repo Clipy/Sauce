@@ -12,10 +12,10 @@ import Foundation
 import Carbon
 import AppKit
 
-final class ModifierTransformer {}
+open class ModifierTransformer {}
 
 // MARK: - Cocoa & Carbon
-extension ModifierTransformer {
+open extension ModifierTransformer {
     func carbonFlags(from cocoaFlags: NSEvent.ModifierFlags) -> Int {
         var carbonFlags: Int = 0
         if cocoaFlags.contains(.command) {

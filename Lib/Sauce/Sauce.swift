@@ -11,13 +11,13 @@
 import Foundation
 import AppKit
 
-public extension NSNotification.Name {
+open extension NSNotification.Name {
     static let SauceSelectedKeyboardInputSourceChanged = Notification.Name("SauceSelectedKeyboardInputSourceChanged")
     static let SauceEnabledKeyboardInputSourcesChanged = Notification.Name("SauceEnabledKeyboardInputSourcesChanged")
     static let SauceSelectedKeyboardKeyCodesChanged = Notification.Name("SauceSelectedKeyboardKeyCodesChanged")
 }
 
-public final class Sauce {
+open class Sauce {
 
     // MARK: - Properties
     public static let shared = Sauce()
@@ -34,14 +34,14 @@ public final class Sauce {
 }
 
 // MARK: - Input Sources
-public extension Sauce {
+open extension Sauce {
     func currentInputSources() -> [InputSource] {
         return layout.inputSources
     }
 }
 
 // MARK: - KeyCodes
-public extension Sauce {
+open extension Sauce {
     func keyCode(for key: Key) -> CGKeyCode {
         return currentKeyCode(for: key) ?? key.QWERTYKeyCode
     }
@@ -64,7 +64,7 @@ public extension Sauce {
 }
 
 // MARK: - Key
-public extension Sauce {
+open extension Sauce {
     func key(for keyCode: Int) -> Key? {
         return currentKey(for: keyCode) ?? Key(QWERTYKeyCode: keyCode)
     }
@@ -79,7 +79,7 @@ public extension Sauce {
 }
 
 // MARK: - Characters
-public extension Sauce {
+open extension Sauce {
     func character(for keyCode: Int, carbonModifiers: Int) -> String? {
         return currentCharacter(for: keyCode, carbonModifiers: carbonModifiers) ?? currentASCIICapableCharacter(for: keyCode, carbonModifiers: carbonModifiers)
     }

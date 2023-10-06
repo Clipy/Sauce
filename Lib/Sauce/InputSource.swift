@@ -11,7 +11,7 @@
 import Foundation
 import Carbon
 
-public final class InputSource {
+open class InputSource {
 
     // MARK: - Properties
     public let id: String
@@ -42,7 +42,7 @@ public final class InputSource {
 }
 
 // MARK: - Hashable
-extension InputSource: Hashable {
+open extension InputSource: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
         hasher.combine(modeID)
@@ -50,7 +50,7 @@ extension InputSource: Hashable {
 }
 
 // MARK: - Equatable
-extension InputSource: Equatable {
+open extension InputSource: Equatable {
     public static func == (lhs: InputSource, rhs: InputSource) -> Bool {
         return lhs.id == rhs.id &&
             lhs.modeID == rhs.modeID
