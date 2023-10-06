@@ -21,11 +21,9 @@ jobs:
           -workspace "$PROJECT" \
           -scheme "$SCHEME" \
           -sdk "$SDK" \
-          -destination "$DESTINATION" \
           -configuration Debug \
           ENABLE_TESTABILITY=YES | xcpretty -c;
       env:
         PROJECT: Sauce.xcworkspace
         SCHEME: Sauce
         SDK: macosx
-        DESTINATION: arch=x86_64
