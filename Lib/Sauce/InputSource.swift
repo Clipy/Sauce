@@ -42,7 +42,7 @@ open class InputSource {
 }
 
 // MARK: - Hashable
-open extension InputSource: Hashable {
+extension InputSource: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
         hasher.combine(modeID)
@@ -50,7 +50,7 @@ open extension InputSource: Hashable {
 }
 
 // MARK: - Equatable
-open extension InputSource: Equatable {
+extension InputSource: Equatable {
     public static func == (lhs: InputSource, rhs: InputSource) -> Bool {
         return lhs.id == rhs.id &&
             lhs.modeID == rhs.modeID

@@ -15,8 +15,8 @@ import AppKit
 open class ModifierTransformer {}
 
 // MARK: - Cocoa & Carbon
-open extension ModifierTransformer {
-    func carbonFlags(from cocoaFlags: NSEvent.ModifierFlags) -> Int {
+extension ModifierTransformer {
+    public func carbonFlags(from cocoaFlags: NSEvent.ModifierFlags) -> Int {
         var carbonFlags: Int = 0
         if cocoaFlags.contains(.command) {
             carbonFlags |= cmdKey
@@ -33,7 +33,7 @@ open extension ModifierTransformer {
         return carbonFlags
     }
 
-    func convertCharactorSupportCarbonModifiers(from carbonModifiers: Int) -> Int {
+    public func convertCharactorSupportCarbonModifiers(from carbonModifiers: Int) -> Int {
         var convertedCarbonModifiers: Int = 0
         if (carbonModifiers & optionKey) != 0 {
             convertedCarbonModifiers |= optionKey
