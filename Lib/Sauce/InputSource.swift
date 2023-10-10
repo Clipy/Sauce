@@ -11,7 +11,7 @@
 import Foundation
 import Carbon
 
-public final class InputSource {
+open class InputSource {
 
     // MARK: - Properties
     public let id: String
