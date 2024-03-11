@@ -12,7 +12,7 @@ import Foundation
 import Carbon
 
 // swiftlint:disable file_length function_body_length type_body_length identifier_name
-public enum Key: String, Codable, Equatable {
+public enum Key: String, Codable, Equatable, Sendable {
     case a
     case s
     case d
