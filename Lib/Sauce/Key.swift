@@ -8,6 +8,7 @@
 //  Copyright © 2015-2020 Clipy Project.
 //
 
+#if os(macOS)
 import Foundation
 import Carbon
 
@@ -561,3 +562,4 @@ public enum Key: String, Codable, Equatable {
     }
 
 }
+#endif

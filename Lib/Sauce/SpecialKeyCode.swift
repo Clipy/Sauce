@@ -8,6 +8,7 @@
 //  Copyright © 2015-2020 Clipy Project.
 //
 
+#if os(macOS)
 import Foundation
 import Carbon
 
@@ -157,3 +158,4 @@ private extension Int {
         return String(format: "%C", self)
     }
 }
+#endif

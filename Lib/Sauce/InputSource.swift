@@ -8,6 +8,7 @@
 //  Copyright © 2015-2020 Clipy Project.
 //
 
+#if os(macOS)
 import Foundation
 import Carbon
 
@@ -56,3 +57,4 @@ extension InputSource: Equatable {
             lhs.modeID == rhs.modeID
     }
 }
+#endif
