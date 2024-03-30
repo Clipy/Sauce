@@ -8,6 +8,7 @@
 //  Copyright © 2015-2020 Clipy Project.
 //
 
+#if os(macOS)
 import AppKit
 
 extension NSMenuItem {
@@ -21,3 +22,4 @@ extension NSMenuItem {
         return Key(character: keyEquivalent, virtualKeyCode: nil)
     }
 }
+#endif

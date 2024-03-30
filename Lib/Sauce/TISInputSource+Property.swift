@@ -8,6 +8,7 @@
 //  Copyright © 2015-2020 Clipy Project.
 //
 
+#if os(macOS)
 import Foundation
 import Carbon
 
@@ -17,3 +18,4 @@ extension TISInputSource {
         return Unmanaged<AnyObject>.fromOpaque(value).takeUnretainedValue() as? T
     }
 }
+#endif

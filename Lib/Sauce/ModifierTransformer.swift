@@ -8,6 +8,7 @@
 //  Copyright © 2015-2020 Clipy Project.
 //
 
+#if os(macOS)
 import Foundation
 import Carbon
 import AppKit
@@ -44,3 +45,4 @@ extension ModifierTransformer {
         return convertedCarbonModifiers
     }
 }
+#endif

@@ -8,6 +8,7 @@
 //  Copyright © 2015-2020 Clipy Project.
 //
 
+#if os(macOS)
 import Foundation
 import Carbon
 
@@ -186,3 +187,4 @@ private extension KeyboardLayout {
         return NSString(characters: &chars, length: length) as String
     }
 }
+#endif
