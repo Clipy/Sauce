@@ -37,4 +37,4 @@ jobs:
       MINT_PATH: .mint/lib
       MINT_LINK_PATH: .mint/bin
       SWIFTLINT_VERSION: 0.53.0
-      DEVELOPER_DIR: /Applications/Xcode_15.0.app/Contents/Developer
+      DEVELOPER_DIR: /Applications/Xcode_15.2.app/Contents/Developer
