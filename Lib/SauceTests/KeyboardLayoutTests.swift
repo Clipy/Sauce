@@ -37,17 +37,18 @@ final class KeyboardLayoutTests: XCTestCase {
     private let QWERTYVKeyCode = 9
     private let DvorakVKeyCode = 47 // swiftlint:disable:this identifier_name
 
-    private var selectedInputSource: InputSource?
+    private static var selectedInputSource: InputSource?
 
-    override func setUp() {
+    override static func setUp() {
         super.setUp()
         selectedInputSource = InputSource(source: TISCopyCurrentKeyboardLayoutInputSource().takeUnretainedValue())
     }
 
-    override func tearDown() {
+    override static func tearDown() {
         super.tearDown()
         guard let selectedInputSource else { return }
-        selectInputSource(id: selectedInputSource.id)
+        TISEnableInputSource(selectedInputSource.source)
+        TISSelectInputSource(selectedInputSource.source)
     }
 
     // MARK: - Tests
@@ -73,6 +74,28 @@ final class KeyboardLayoutTests: XCTestCase {
         uninstallInputSource(id: ABCKeyboardID)
     }
 
+    func testKeyCodesForABCKeyboardWithCommandModifier() {
+        let isInstalledABCKeyboard = isInstalledInputSource(id: ABCKeyboardID)
+        XCTAssertTrue(installInputSource(id: ABCKeyboardID))
+        XCTAssertTrue(selectInputSource(id: ABCKeyboardID))
+        let notificationCenter = NotificationCenter()
+        let keyboardLayout = KeyboardLayout(notificationCenter: notificationCenter)
+        let vKeyCode = keyboardLayout.currentKeyCode(for: .v, carbonModifiers: cmdKey)
+        XCTAssertEqual(vKeyCode, CGKeyCode(QWERTYVKeyCode))
+        let vKey = keyboardLayout.currentKey(for: QWERTYVKeyCode, carbonModifiers: cmdKey)
+        XCTAssertEqual(vKey, .v)
+        let vCharacter = keyboardLayout.currentCharacter(for: QWERTYVKeyCode, carbonModifiers: cmdKey)
+        XCTAssertEqual(vCharacter, "v")
+        let vShiftCharacter = keyboardLayout.currentCharacter(for: QWERTYVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: [.shift, .command]))
+        XCTAssertEqual(vShiftCharacter, "V")
+        let vOptionCharacter = keyboardLayout.currentCharacter(for: QWERTYVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: [.option, .command]))
+        XCTAssertEqual(vOptionCharacter, "√")
+        let vShiftOptionCharacter = keyboardLayout.currentCharacter(for: QWERTYVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: [.shift, .option, .command]))
+        XCTAssertEqual(vShiftOptionCharacter, "◊")
+        guard !isInstalledABCKeyboard else { return }
+        uninstallInputSource(id: ABCKeyboardID)
+    }
+
     func testKeyCodesForDvorakKeyboard() {
         let isInstalledDvorakKeyboard = isInstalledInputSource(id: dvorakKeyboardID)
         XCTAssertTrue(installInputSource(id: dvorakKeyboardID))
@@ -85,11 +108,11 @@ final class KeyboardLayoutTests: XCTestCase {
         XCTAssertEqual(vKey, .v)
         let vCharacter = keyboardLayout.currentCharacter(for: DvorakVKeyCode, carbonModifiers: 0)
         XCTAssertEqual(vCharacter, "v")
-        let vShiftCharacter = keyboardLayout.currentCharacter(for: DvorakVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: [.shift, .command]))
+        let vShiftCharacter = keyboardLayout.currentCharacter(for: DvorakVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: .shift))
         XCTAssertEqual(vShiftCharacter, "V")
-        let vOptionCharacter = keyboardLayout.currentCharacter(for: DvorakVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: [.option, .command]))
+        let vOptionCharacter = keyboardLayout.currentCharacter(for: DvorakVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: [.option]))
         XCTAssertEqual(vOptionCharacter, "√")
-        let vShiftOptionCharacter = keyboardLayout.currentCharacter(for: DvorakVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: [.shift, .option, .command]))
+        let vShiftOptionCharacter = keyboardLayout.currentCharacter(for: DvorakVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: [.shift, .option]))
         XCTAssertEqual(vShiftOptionCharacter, "◊")
         guard !isInstalledDvorakKeyboard else { return }
         uninstallInputSource(id: dvorakKeyboardID)
