@@ -9,11 +9,10 @@
 //
 
 #if os(macOS)
-import Foundation
 import Carbon
+import Foundation
 
 open class InputSource {
-
     // MARK: - Properties
     public let id: String
     public let modeID: String?
@@ -39,7 +38,6 @@ open class InputSource {
         self.localizedName = source.value(forProperty: kTISPropertyLocalizedName, type: String.self)
         self.source = source
     }
-
 }
 
 // MARK: - Hashable

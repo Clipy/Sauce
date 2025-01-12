@@ -18,6 +18,7 @@ final class KeyboardLayoutTests: XCTestCase {
     // MARK: - Properties
     private let ABCKeyboardID = "com.apple.keylayout.ABC"
     private let dvorakKeyboardID = "com.apple.keylayout.Dvorak"
+    private let dvorakQWERTYKeyboardID = "com.apple.keylayout.DVORAK-QWERTYCMD"
     private var japaneseKeyboardID: String {
         if #available(macOS 11.0, *) {
             return "com.apple.inputmethod.Kotoeri.RomajiTyping.Japanese"
@@ -36,6 +37,19 @@ final class KeyboardLayoutTests: XCTestCase {
     private let QWERTYVKeyCode = 9
     private let DvorakVKeyCode = 47 // swiftlint:disable:this identifier_name
 
+    private var selectedInputSource: InputSource?
+
+    override func setUp() {
+        super.setUp()
+        selectedInputSource = InputSource(source: TISCopyCurrentKeyboardLayoutInputSource().takeUnretainedValue())
+    }
+
+    override func tearDown() {
+        super.tearDown()
+        guard let selectedInputSource else { return }
+        selectInputSource(id: selectedInputSource.id)
+    }
+
     // MARK: - Tests
     func testKeyCodesForABCKeyboard() {
         let isInstalledABCKeyboard = isInstalledInputSource(id: ABCKeyboardID)
@@ -43,9 +57,9 @@ final class KeyboardLayoutTests: XCTestCase {
         XCTAssertTrue(selectInputSource(id: ABCKeyboardID))
         let notificationCenter = NotificationCenter()
         let keyboardLayout = KeyboardLayout(notificationCenter: notificationCenter)
-        let vKeyCode = keyboardLayout.currentKeyCode(for: .v)
+        let vKeyCode = keyboardLayout.currentKeyCode(for: .v, carbonModifiers: 0)
         XCTAssertEqual(vKeyCode, CGKeyCode(QWERTYVKeyCode))
-        let vKey = keyboardLayout.currentKey(for: QWERTYVKeyCode)
+        let vKey = keyboardLayout.currentKey(for: QWERTYVKeyCode, carbonModifiers: 0)
         XCTAssertEqual(vKey, .v)
         let vCharacter = keyboardLayout.currentCharacter(for: QWERTYVKeyCode, carbonModifiers: 0)
         XCTAssertEqual(vCharacter, "v")
@@ -65,20 +79,54 @@ final class KeyboardLayoutTests: XCTestCase {
         XCTAssertTrue(selectInputSource(id: dvorakKeyboardID))
         let notificationCenter = NotificationCenter()
         let keyboardLayout = KeyboardLayout(notificationCenter: notificationCenter)
-        let vKeyCode = keyboardLayout.currentKeyCode(for: .v)
+        let vKeyCode = keyboardLayout.currentKeyCode(for: .v, carbonModifiers: 0)
         XCTAssertEqual(vKeyCode, CGKeyCode(DvorakVKeyCode))
-        let vKey = keyboardLayout.currentKey(for: DvorakVKeyCode)
+        let vKey = keyboardLayout.currentKey(for: DvorakVKeyCode, carbonModifiers: 0)
         XCTAssertEqual(vKey, .v)
         let vCharacter = keyboardLayout.currentCharacter(for: DvorakVKeyCode, carbonModifiers: 0)
         XCTAssertEqual(vCharacter, "v")
-        let vShiftCharacter = keyboardLayout.currentCharacter(for: DvorakVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: .shift))
+        let vShiftCharacter = keyboardLayout.currentCharacter(for: DvorakVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: [.shift, .command]))
         XCTAssertEqual(vShiftCharacter, "V")
-        let vOptionCharacter = keyboardLayout.currentCharacter(for: DvorakVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: [.option]))
+        let vOptionCharacter = keyboardLayout.currentCharacter(for: DvorakVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: [.option, .command]))
         XCTAssertEqual(vOptionCharacter, "√")
-        let vShiftOptionCharacter = keyboardLayout.currentCharacter(for: DvorakVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: [.shift, .option]))
+        let vShiftOptionCharacter = keyboardLayout.currentCharacter(for: DvorakVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: [.shift, .option, .command]))
         XCTAssertEqual(vShiftOptionCharacter, "◊")
         guard !isInstalledDvorakKeyboard else { return }
         uninstallInputSource(id: dvorakKeyboardID)
+    }
+
+    func testKeyCodesForDvorakQWERTYKeyboard() {
+        let isInstalledDvorakQWERTYKeyboard = isInstalledInputSource(id: dvorakQWERTYKeyboardID)
+        XCTAssertTrue(installInputSource(id: dvorakQWERTYKeyboardID))
+        XCTAssertTrue(selectInputSource(id: dvorakQWERTYKeyboardID))
+        let notificationCenter = NotificationCenter()
+        let keyboardLayout = KeyboardLayout(notificationCenter: notificationCenter)
+        let vKeyCode = keyboardLayout.currentKeyCode(for: .v, carbonModifiers: 0)
+        let vCommandKeyCode = keyboardLayout.currentKeyCode(for: .v, carbonModifiers: cmdKey)
+        XCTAssertEqual(vKeyCode, CGKeyCode(DvorakVKeyCode))
+        XCTAssertEqual(vCommandKeyCode, CGKeyCode(QWERTYVKeyCode))
+        let vKey = keyboardLayout.currentKey(for: DvorakVKeyCode, carbonModifiers: 0)
+        let vCommandKey = keyboardLayout.currentKey(for: QWERTYVKeyCode, carbonModifiers: cmdKey)
+        XCTAssertEqual(vKey, .v)
+        XCTAssertEqual(vCommandKey, .v)
+        let vCharacter = keyboardLayout.currentCharacter(for: DvorakVKeyCode, carbonModifiers: 0)
+        let vCommandCharacter = keyboardLayout.currentCharacter(for: QWERTYVKeyCode, carbonModifiers: cmdKey)
+        XCTAssertEqual(vCharacter, "v")
+        XCTAssertEqual(vCommandCharacter, "v")
+        let vShiftCharacter = keyboardLayout.currentCharacter(for: DvorakVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: .shift))
+        let vCommandShiftCharacter = keyboardLayout.currentCharacter(for: QWERTYVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: [.command, .shift]))
+        XCTAssertEqual(vShiftCharacter, "V")
+        XCTAssertEqual(vCommandShiftCharacter, "V")
+        let vOptionCharacter = keyboardLayout.currentCharacter(for: DvorakVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: [.option]))
+        let vCommandOptionCharacter = keyboardLayout.currentCharacter(for: QWERTYVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: [.command, .option]))
+        XCTAssertEqual(vOptionCharacter, "√")
+        XCTAssertEqual(vCommandOptionCharacter, "√")
+        let vShiftOptionCharacter = keyboardLayout.currentCharacter(for: DvorakVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: [.shift, .option]))
+        let vCommandShiftOptionCharacter = keyboardLayout.currentCharacter(for: QWERTYVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: [.command, .shift, .option]))
+        XCTAssertEqual(vShiftOptionCharacter, "◊")
+        XCTAssertEqual(vCommandShiftOptionCharacter, "◊")
+        guard !isInstalledDvorakQWERTYKeyboard else { return }
+        uninstallInputSource(id: dvorakQWERTYKeyboardID)
     }
 
     func testKeyCodesJapanesesAndDvorakOnlyKeyboard() {
@@ -97,9 +145,9 @@ final class KeyboardLayoutTests: XCTestCase {
             .forEach { uninstallInputSource(id: $0.id) }
         let notificationCenter = NotificationCenter()
         let keyboardLayout = KeyboardLayout(notificationCenter: notificationCenter)
-        let vKeyCode = keyboardLayout.currentKeyCode(for: .v)
+        let vKeyCode = keyboardLayout.currentKeyCode(for: .v, carbonModifiers: 0)
         XCTAssertEqual(vKeyCode, CGKeyCode(QWERTYVKeyCode))
-        let vKey = keyboardLayout.currentKey(for: QWERTYVKeyCode)
+        let vKey = keyboardLayout.currentKey(for: QWERTYVKeyCode, carbonModifiers: 0)
         XCTAssertEqual(vKey, .v)
         let vCharacter = keyboardLayout.currentCharacter(for: QWERTYVKeyCode, carbonModifiers: 0)
         XCTAssertEqual(vCharacter, "v")

@@ -12,6 +12,7 @@
 		09CDC68A210F044A007DDFE4 /* TISInputSource+Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09CDC689210F044A007DDFE4 /* TISInputSource+Property.swift */; };
 		50582477261C6F1F00AD2DD8 /* NSMenuItem+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50582476261C6F1F00AD2DD8 /* NSMenuItem+Key.swift */; };
 		5058247B261C6FA400AD2DD8 /* NSMenuItem+KeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5058247A261C6FA400AD2DD8 /* NSMenuItem+KeyTests.swift */; };
+		C5FADB892D32779F00F038E3 /* KeyModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FADB882D32779B00F038E3 /* KeyModifier.swift */; };
 		FA1E407621107B0A0016D710 /* SpecialKeyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1E407521107B0A0016D710 /* SpecialKeyCode.swift */; };
 		FAA4132A210E2C730097D522 /* Sauce.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAA41320210E2C730097D522 /* Sauce.framework */; };
 		FAA41331210E2C730097D522 /* Sauce.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA41323210E2C730097D522 /* Sauce.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -37,6 +38,7 @@
 		09CDC689210F044A007DDFE4 /* TISInputSource+Property.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TISInputSource+Property.swift"; sourceTree = "<group>"; };
 		50582476261C6F1F00AD2DD8 /* NSMenuItem+Key.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMenuItem+Key.swift"; sourceTree = "<group>"; };
 		5058247A261C6FA400AD2DD8 /* NSMenuItem+KeyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMenuItem+KeyTests.swift"; sourceTree = "<group>"; };
+		C5FADB882D32779B00F038E3 /* KeyModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyModifier.swift; sourceTree = "<group>"; };
 		FA1E407521107B0A0016D710 /* SpecialKeyCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialKeyCode.swift; sourceTree = "<group>"; };
 		FAA41320210E2C730097D522 /* Sauce.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Sauce.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAA41323210E2C730097D522 /* Sauce.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sauce.h; sourceTree = "<group>"; };
@@ -68,6 +70,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C5FADB8C2D335E1300F038E3 /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				FAA41368210E33060097D522 /* KeyboardLayout.swift */,
+				C5FADB882D32779B00F038E3 /* KeyModifier.swift */,
+				FA1E407521107B0A0016D710 /* SpecialKeyCode.swift */,
+				09CDC689210F044A007DDFE4 /* TISInputSource+Property.swift */,
+			);
+			path = Internal;
+			sourceTree = "<group>";
+		};
 		FAA41316210E2C730097D522 = {
 			isa = PBXGroup;
 			children = (
@@ -89,14 +102,12 @@
 		FAA41322210E2C730097D522 /* Sauce */ = {
 			isa = PBXGroup;
 			children = (
+				C5FADB8C2D335E1300F038E3 /* Internal */,
 				FAA41323210E2C730097D522 /* Sauce.h */,
 				FAA41324210E2C730097D522 /* Info.plist */,
 				FAA41364210E2D9B0097D522 /* Sauce.swift */,
 				FAA4136A210E33CB0097D522 /* InputSource.swift */,
-				FAA41368210E33060097D522 /* KeyboardLayout.swift */,
-				09CDC689210F044A007DDFE4 /* TISInputSource+Property.swift */,
 				FAA41366210E2EFB0097D522 /* Key.swift */,
-				FA1E407521107B0A0016D710 /* SpecialKeyCode.swift */,
 				095EF0002456ED9A00174829 /* ModifierTransformer.swift */,
 				50582476261C6F1F00AD2DD8 /* NSMenuItem+Key.swift */,
 			);
@@ -230,6 +241,7 @@
 				FAA41365210E2D9B0097D522 /* Sauce.swift in Sources */,
 				FA1E407621107B0A0016D710 /* SpecialKeyCode.swift in Sources */,
 				FAA41367210E2EFB0097D522 /* Key.swift in Sources */,
+				C5FADB892D32779F00F038E3 /* KeyModifier.swift in Sources */,
 				095EF0012456ED9A00174829 /* ModifierTransformer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
