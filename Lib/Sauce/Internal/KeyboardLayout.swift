@@ -9,15 +9,14 @@
 //
 
 #if os(macOS)
-import Foundation
 import Carbon
+import Foundation
 
-final class KeyboardLayout {
-
+internal final class KeyboardLayout {
     // MARK: - Properties
     private var currentKeyboardLayoutInputSource: InputSource
     private var currentASCIICapableInputSource: InputSource
-    private var mappedKeyCodes = [InputSource: [Key: CGKeyCode]]()
+    private var mappedKeyCodes = [InputSource: [KeyModifier: [Key: CGKeyCode]]]()
     private(set) var inputSources = [InputSource]()
 
     private let distributedNotificationCenter: DistributedNotificationCenter
@@ -40,41 +39,40 @@ final class KeyboardLayout {
         distributedNotificationCenter.removeObserver(self)
         notificationCenter.removeObserver(self)
     }
-
 }
 
 // MARK: - KeyCodes
-extension KeyboardLayout {
-    func currentKeyCodes() -> [Key: CGKeyCode]? {
-        return keyCodes(with: currentKeyboardLayoutInputSource)
+internal extension KeyboardLayout {
+    func currentKeyCodes(carbonModifiers: Int) -> [Key: CGKeyCode]? {
+        return keyCodes(with: currentKeyboardLayoutInputSource, carbonModifiers: carbonModifiers)
     }
 
-    func currentKeyCode(for key: Key) -> CGKeyCode? {
-        return keyCode(with: currentKeyboardLayoutInputSource, key: key)
+    func currentKeyCode(for key: Key, carbonModifiers: Int) -> CGKeyCode? {
+        return keyCode(with: currentKeyboardLayoutInputSource, key: key, carbonModifiers: carbonModifiers)
     }
 
-    func keyCodes(with source: InputSource) -> [Key: CGKeyCode]? {
-        return mappedKeyCodes[source]
+    func keyCodes(with source: InputSource, carbonModifiers: Int) -> [Key: CGKeyCode]? {
+        return mappedKeyCodes[source]?[.init(carbonModifiers: carbonModifiers)]
     }
 
-    func keyCode(with source: InputSource, key: Key) -> CGKeyCode? {
-        return mappedKeyCodes[source]?[key]
+    func keyCode(with source: InputSource, key: Key, carbonModifiers: Int) -> CGKeyCode? {
+        return mappedKeyCodes[source]?[.init(carbonModifiers: carbonModifiers)]?[key]
     }
 }
 
 // MARK: - Key
-extension KeyboardLayout {
-    func currentKey(for keyCode: Int) -> Key? {
-        return key(with: currentKeyboardLayoutInputSource, keyCode: keyCode)
+internal extension KeyboardLayout {
+    func currentKey(for keyCode: Int, carbonModifiers: Int) -> Key? {
+        return key(with: currentKeyboardLayoutInputSource, keyCode: keyCode, carbonModifiers: carbonModifiers)
     }
 
-    func key(with source: InputSource, keyCode: Int) -> Key? {
-        return mappedKeyCodes[source]?.first(where: { $0.value == CGKeyCode(keyCode) })?.key
+    func key(with source: InputSource, keyCode: Int, carbonModifiers: Int) -> Key? {
+        return mappedKeyCodes[source]?[.init(carbonModifiers: carbonModifiers)]?.first(where: { $0.value == CGKeyCode(keyCode) })?.key
     }
 }
 
 // MARK: - Characters
-extension KeyboardLayout {
+internal extension KeyboardLayout {
     func currentCharacter(for keyCode: Int, carbonModifiers: Int) -> String? {
         return character(with: currentKeyboardLayoutInputSource, keyCode: keyCode, carbonModifiers: carbonModifiers)
     }
@@ -89,7 +87,7 @@ extension KeyboardLayout {
 }
 
 // MARK: - Notifications
-extension KeyboardLayout {
+internal extension KeyboardLayout {
     private func observeNotifications() {
         distributedNotificationCenter.addObserver(self,
                                                   selector: #selector(selectedKeyboardInputSourceChanged),
@@ -145,27 +143,57 @@ private extension KeyboardLayout {
     func mappingKeyCodes(with source: InputSource) {
         guard let layoutData = TISGetInputSourceProperty(source.source, kTISPropertyUnicodeKeyLayoutData) else { return }
         let data = Unmanaged<CFData>.fromOpaque(layoutData).takeUnretainedValue() as Data
-        var keyCodes = [Key: CGKeyCode]()
-        for i in 0..<128 {
-            guard let character = character(with: data, keyCode: i, carbonModifiers: 0) else { continue }
-            guard let key = Key(character: character, virtualKeyCode: i) else { continue }
-            guard keyCodes[key] == nil else { continue }
-            keyCodes[key] = CGKeyCode(i)
+        var codes = [KeyModifier: [Key: CGKeyCode]]()
+        KeyModifier.allCases.forEach { keyModifier in
+            var keyCodes = [Key: CGKeyCode]()
+            for i in 0..<128 {
+                guard let character = character(with: data, keyCode: i, carbonModifiers: keyModifier.carbonModifier) else { continue }
+                guard let key = Key(character: character, virtualKeyCode: i) else { continue }
+                guard keyCodes[key] == nil else { continue }
+                keyCodes[key] = CGKeyCode(i)
+            }
+            codes[keyModifier] = keyCodes
         }
-        mappedKeyCodes[source] = keyCodes
+        mappedKeyCodes[source] = codes
     }
 
     func character(with source: TISInputSource, keyCode: Int, carbonModifiers: Int) -> String? {
         guard let layoutData = TISGetInputSourceProperty(source, kTISPropertyUnicodeKeyLayoutData) else { return nil }
         let data = Unmanaged<CFData>.fromOpaque(layoutData).takeUnretainedValue() as Data
-        return character(with: data, keyCode: keyCode, carbonModifiers: carbonModifiers)
+        let keyModifier = KeyModifier(carbonModifiers: carbonModifiers)
+        var carbonModifiers = modifierTransformer.convertCharactorSupportCarbonModifiers(from: carbonModifiers)
+        switch keyModifier {
+        case .none:
+            return character(with: data, keyCode: keyCode, carbonModifiers: carbonModifiers)
+        case .withCommand:
+            /// Determines if it's a special keyboard environment by comparing the string output with and without the ⌘ key pressed
+            /// For example, with a `Dvorak - QWERTY ⌘` keyboard, entering keycode `47` returns different characters depending on whether the ⌘ key pressed or not
+            /// ⌘ not pressed: `v`
+            /// ⌘ pressed: `.` (same as entering keycode `47` on a QWERTY keyboard)
+            let noCommandCharacter = character(with: data, keyCode: keyCode, carbonModifiers: 0)
+            let commandCharacter = character(with: data, keyCode: keyCode, carbonModifiers: cmdKey)
+            guard noCommandCharacter != commandCharacter else {
+                /// If the outputs are the same, it's a regular keyboard, so return the string excluding the ⌘ key
+                return character(with: data, keyCode: keyCode, carbonModifiers: carbonModifiers)
+            }
+            /// Workaround: To get a string with modifiers other than ⌘ key working, obtain the keycode for the standard key layout and generate the string
+            guard let commandCharacter,
+                  let key = Key(character: commandCharacter, virtualKeyCode: keyCode),
+                  let keyCode = mappedKeyCodes[.init(source: source)]?[.none]?.first(where: { $0.key == key })?.value
+            else {
+                /// If mapping is not possible, ignore modifiers other than ⌘ and return a value as close as possible to the key input
+                carbonModifiers |= cmdKey
+                return character(with: data, keyCode: keyCode, carbonModifiers: carbonModifiers)
+            }
+            return character(with: data, keyCode: Int(keyCode), carbonModifiers: carbonModifiers)
+        }
     }
 
     func character(with layoutData: Data, keyCode: Int, carbonModifiers: Int) -> String? {
         // In the case of the special key code, it does not depend on the keyboard layout
         if let specialKeyCode = SpecialKeyCode(keyCode: keyCode) { return specialKeyCode.character }
 
-        let modifierKeyState = (modifierTransformer.convertCharactorSupportCarbonModifiers(from: carbonModifiers) >> 8) & 0xff
+        let modifierKeyState = (carbonModifiers >> 8) & 0xff
         var deadKeyState: UInt32 = 0
         let maxChars = 256
         var chars = [UniChar](repeating: 0, count: maxChars)

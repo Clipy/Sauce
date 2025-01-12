@@ -9,8 +9,8 @@
 //
 
 #if os(macOS)
-import Foundation
 import Carbon
+import Foundation
 
 // swiftlint:disable file_length function_body_length type_body_length identifier_name
 public enum Key: String, Codable, Equatable, Sendable {
@@ -560,6 +560,5 @@ public enum Key: String, Codable, Equatable, Sendable {
         case .section: return CGKeyCode(kVK_ISO_Section)
         }
     }
-
 }
 #endif
