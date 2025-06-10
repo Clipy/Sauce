@@ -112,7 +112,7 @@ enum SpecialKeyCode {
         switch self {
         case .return: return 0x21A9.string // ↩
         case .tab: return 0x21E5.string // ⇥
-        case .space: return "Space"
+        case .space: return 0x2423.string // ␣
         case .delete: return 0x232B.string // ⌫
         case .escape: return 0x238B.string // ⎋
         case .f17: return "F17"
