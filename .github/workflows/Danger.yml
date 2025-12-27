@@ -6,20 +6,20 @@ on:
       - master
 jobs:
   danger:
-    runs-on: macos-13
+    runs-on: macos-latest
     # https://github.com/danger/danger/issues/1103
     if: (github.event.pull_request.head.repo.fork == false)
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       with:
         fetch-depth: 0
     - name: Setup ruby
-      uses: ruby/setup-ruby@v1
+      uses: ruby/setup-ruby@ae195bbe749a7cef685ac729197124a48305c1cb # v1.276.0
       with:
-        ruby-version: '3.2'
+        ruby-version: '3.4'
         bundler-cache: true
     - name: Cache Mint
-      uses: actions/cache@v3
+      uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
       with:
         path: .mint
         key: ${{ runner.os }}-mint-${{ env.SWIFTLINT_VERSION }}
@@ -36,5 +36,5 @@ jobs:
     env:
       MINT_PATH: .mint/lib
       MINT_LINK_PATH: .mint/bin
-      SWIFTLINT_VERSION: 0.53.0
-      DEVELOPER_DIR: /Applications/Xcode_15.2.app/Contents/Developer
+      SWIFTLINT_VERSION: 0.62.2
+      DEVELOPER_DIR: /Applications/Xcode_26.1.app/Contents/Developer
