@@ -9,8 +9,8 @@
 //
 
 #if os(macOS)
-import Foundation
 import Carbon
+import Foundation
 
 // swiftlint:disable identifier_name function_body_length
 
@@ -20,7 +20,7 @@ import Carbon
  *
  *  UCKeyTranslate can not convert a layout-independent keycode to string.
  **/
-enum SpecialKeyCode {
+internal enum SpecialKeyCode {
     case `return`
     case tab
     case space

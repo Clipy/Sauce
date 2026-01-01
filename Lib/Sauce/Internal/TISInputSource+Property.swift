@@ -9,8 +9,8 @@
 //
 
 #if os(macOS)
-import Foundation
 import Carbon
+import Foundation
 
 extension TISInputSource {
     func value<T>(forProperty propertyKey: CFString, type: T.Type) -> T? {

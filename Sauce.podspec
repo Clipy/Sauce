@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/Clipy/Sauce"
   s.author       = { "Econa77" => "s.f.1992.ip@gmail.com" }
   s.source       = { :git => "https://github.com/Clipy/Sauce.git", :tag => "v#{s.version}" }
-  s.platform     = :osx, '10.13'
+  s.platform     = :osx, '11.0'
   s.source_files = 'Lib/Sauce/**/*.swift'
   s.swift_version = '5.0'
   s.frameworks   = 'Carbon', 'Cocoa'

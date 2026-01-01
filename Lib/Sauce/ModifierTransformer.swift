@@ -9,9 +9,9 @@
 //
 
 #if os(macOS)
-import Foundation
-import Carbon
 import AppKit
+import Carbon
+import Foundation
 
 open class ModifierTransformer {}
 
