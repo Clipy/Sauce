@@ -15,13 +15,13 @@ struct InputSourceTrait: TestTrait, TestScoping {
         let allInputSources = InputSource.allInputSources
         let enabledInputSources = InputSource.enabledInputSources
         let enableInputSources = try enableIDs.map { id in
-            try #require(allInputSources.first { $0.id == id} )
+            try #require(allInputSources.first { $0.id == id })
         }
         let selectInputSources = try selectIDs.map { id in
-            try #require(allInputSources.first { $0.id == id} )
+            try #require(allInputSources.first { $0.id == id })
         }
         let disableInputSources = try disableIDs.map { id in
-            try #require(allInputSources.first { $0.id == id} )
+            try #require(allInputSources.first { $0.id == id })
         }
 
         let deferDisabledInputSources = enableInputSources.filter { inputSource in
