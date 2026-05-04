@@ -8,22 +8,23 @@
 //  Copyright © 2015-2021 Clipy Project.
 //
 
-import XCTest
 import AppKit
+import Testing
 @testable import Sauce
 
-class NSMenuItem_KeyTests: XCTestCase {
-    func testKeyConversionIgnoresCharacterCase() {
+struct NSMenuItem_KeyTests {
+    @Test
+    func keyConversionIgnoresCharacterCase() {
         let menuItem = NSMenuItem()
         menuItem.keyEquivalentModifierMask = .command
 
         menuItem.keyEquivalent = "b"
-        XCTAssertEqual(menuItem.key, .b)
+        #expect(menuItem.key == .b)
 
         menuItem.keyEquivalent = "B"
-        XCTAssertEqual(menuItem.key, .b)
+        #expect(menuItem.key == .b)
 
         menuItem.keyEquivalentModifierMask = .shift
-        XCTAssertEqual(menuItem.key, .b)
+        #expect(menuItem.key == .b)
     }
 }
