@@ -12,7 +12,7 @@ import AppKit
 import Testing
 @testable import Sauce
 
-struct NSMenuItem_KeyTests {
+struct NSMenuItemKeyTests {
     @Test
     func keyConversionIgnoresCharacterCase() {
         let menuItem = NSMenuItem()
