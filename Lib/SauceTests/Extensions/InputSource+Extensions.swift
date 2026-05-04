@@ -1,3 +1,13 @@
+//
+//  InputSource+Extensions.swift
+//
+//  SauceTests
+//  GitHub: https://github.com/clipy
+//  HP: https://clipy-app.com
+//
+//  Copyright © 2015 Clipy Project.
+//
+
 import Carbon
 @testable import Sauce
 
