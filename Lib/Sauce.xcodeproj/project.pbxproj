@@ -12,6 +12,8 @@
 		09CDC68A210F044A007DDFE4 /* TISInputSource+Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09CDC689210F044A007DDFE4 /* TISInputSource+Property.swift */; };
 		50582477261C6F1F00AD2DD8 /* NSMenuItem+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50582476261C6F1F00AD2DD8 /* NSMenuItem+Key.swift */; };
 		5058247B261C6FA400AD2DD8 /* NSMenuItem+KeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5058247A261C6FA400AD2DD8 /* NSMenuItem+KeyTests.swift */; };
+		C57C16682F06CE9B00507D0B /* InputSourceTrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57C16672F06CE7A00507D0B /* InputSourceTrait.swift */; };
+		C57C166B2F06D20B00507D0B /* InputSource+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57C166A2F06D1FB00507D0B /* InputSource+Extensions.swift */; };
 		FA1E407621107B0A0016D710 /* SpecialKeyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1E407521107B0A0016D710 /* SpecialKeyCode.swift */; };
 		FAA4132A210E2C730097D522 /* Sauce.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAA41320210E2C730097D522 /* Sauce.framework */; };
 		FAA41331210E2C730097D522 /* Sauce.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA41323210E2C730097D522 /* Sauce.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -37,6 +39,8 @@
 		09CDC689210F044A007DDFE4 /* TISInputSource+Property.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TISInputSource+Property.swift"; sourceTree = "<group>"; };
 		50582476261C6F1F00AD2DD8 /* NSMenuItem+Key.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMenuItem+Key.swift"; sourceTree = "<group>"; };
 		5058247A261C6FA400AD2DD8 /* NSMenuItem+KeyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMenuItem+KeyTests.swift"; sourceTree = "<group>"; };
+		C57C16672F06CE7A00507D0B /* InputSourceTrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSourceTrait.swift; sourceTree = "<group>"; };
+		C57C166A2F06D1FB00507D0B /* InputSource+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InputSource+Extensions.swift"; sourceTree = "<group>"; };
 		FA1E407521107B0A0016D710 /* SpecialKeyCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialKeyCode.swift; sourceTree = "<group>"; };
 		FAA41320210E2C730097D522 /* Sauce.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Sauce.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAA41323210E2C730097D522 /* Sauce.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sauce.h; sourceTree = "<group>"; };
@@ -68,6 +72,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C57C16662F06CE7700507D0B /* Traits */ = {
+			isa = PBXGroup;
+			children = (
+				C57C16672F06CE7A00507D0B /* InputSourceTrait.swift */,
+			);
+			path = Traits;
+			sourceTree = "<group>";
+		};
+		C57C16692F06D1D300507D0B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C57C166A2F06D1FB00507D0B /* InputSource+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		FAA41316210E2C730097D522 = {
 			isa = PBXGroup;
 			children = (
@@ -106,6 +126,8 @@
 		FAA4132D210E2C730097D522 /* SauceTests */ = {
 			isa = PBXGroup;
 			children = (
+				C57C16692F06D1D300507D0B /* Extensions */,
+				C57C16662F06CE7700507D0B /* Traits */,
 				0909EBCF245D5C9E00ABA339 /* KeyboardLayoutTests.swift */,
 				5058247A261C6FA400AD2DD8 /* NSMenuItem+KeyTests.swift */,
 				FAA41330210E2C730097D522 /* Info.plist */,
@@ -238,6 +260,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C57C16682F06CE9B00507D0B /* InputSourceTrait.swift in Sources */,
+				C57C166B2F06D20B00507D0B /* InputSource+Extensions.swift in Sources */,
 				5058247B261C6FA400AD2DD8 /* NSMenuItem+KeyTests.swift in Sources */,
 				0909EBD0245D5C9E00ABA339 /* KeyboardLayoutTests.swift in Sources */,
 			);

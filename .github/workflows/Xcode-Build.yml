@@ -22,6 +22,7 @@ jobs:
           -scheme "$SCHEME" \
           -sdk "$SDK" \
           -configuration Debug \
+          -parallel-testing-enabled NO \
           ENABLE_TESTABILITY=YES | xcpretty -c;
       env:
         PROJECT: Sauce.xcworkspace
