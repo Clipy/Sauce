@@ -1,215 +1,205 @@
-// 
+//
 //  KeyboardLayoutTests.swift
 //
 //  SauceTests
 //  GitHub: https://github.com/clipy
 //  HP: https://clipy-app.com
-// 
-//  Copyright © 2015-2020 Clipy Project.
+//
+//  Copyright © 2015 Clipy Project.
 //
 
-import XCTest
 import Carbon
+import Foundation
+import Testing
 @testable import Sauce
 
-// swiftlint:disable discarded_notification_center_observer
-final class KeyboardLayoutTests: XCTestCase {
-
+@Suite(.serialized)
+@MainActor
+final class KeyboardLayoutTests {
     // MARK: - Properties
-    private let ABCKeyboardID = "com.apple.keylayout.ABC"
-    private let dvorakKeyboardID = "com.apple.keylayout.Dvorak"
-    private var japaneseKeyboardID: String {
-        if #available(macOS 11.0, *) {
-            return "com.apple.inputmethod.Kotoeri.RomajiTyping.Japanese"
-        } else {
-            return "com.apple.inputmethod.Kotoeri.Japanese"
-        }
-    }
-    private var kotoeriKeyboardID: String {
-        if #available(macOS 11.0, *) {
-            return "com.apple.inputmethod.Kotoeri.RomajiTyping"
-        } else {
-            return "com.apple.inputmethod.Kotoeri"
-        }
-    }
-    private let modifierTransformer = ModifierTransformer()
-    private let QWERTYVKeyCode = 9
-    private let DvorakVKeyCode = 47 // swiftlint:disable:this identifier_name
+    private static let ABCKeyboardID = "com.apple.keylayout.ABC"
+    private static let dvorakKeyboardID = "com.apple.keylayout.Dvorak"
+    private static let japaneseKeyboardID = "com.apple.inputmethod.Kotoeri.RomajiTyping.Japanese"
+    private static let kotoeriKeyboardID = "com.apple.inputmethod.Kotoeri.RomajiTyping"
+    private let qwertyVKeyCode = 9
+    private let dvorakVKeyCode = 47
 
     // MARK: - Tests
-    func testKeyCodesForABCKeyboard() {
-        let isInstalledABCKeyboard = isInstalledInputSource(id: ABCKeyboardID)
-        XCTAssertTrue(installInputSource(id: ABCKeyboardID))
-        XCTAssertTrue(selectInputSource(id: ABCKeyboardID))
+    @Test(
+        .inputSource(enableIDs: [ABCKeyboardID], selectIDs: [ABCKeyboardID])
+    )
+    func keyCodesForABCKeyboard() {
         let notificationCenter = NotificationCenter()
         let keyboardLayout = KeyboardLayout(notificationCenter: notificationCenter)
+
         let vKeyCode = keyboardLayout.currentKeyCode(for: .v)
-        XCTAssertEqual(vKeyCode, CGKeyCode(QWERTYVKeyCode))
-        let vKey = keyboardLayout.currentKey(for: QWERTYVKeyCode)
-        XCTAssertEqual(vKey, .v)
-        let vCharacter = keyboardLayout.currentCharacter(for: QWERTYVKeyCode, carbonModifiers: 0)
-        XCTAssertEqual(vCharacter, "v")
-        let vShiftCharacter = keyboardLayout.currentCharacter(for: QWERTYVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: .shift))
-        XCTAssertEqual(vShiftCharacter, "V")
-        let vOptionCharacter = keyboardLayout.currentCharacter(for: QWERTYVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: [.option]))
-        XCTAssertEqual(vOptionCharacter, "√")
-        let vShiftOptionCharacter = keyboardLayout.currentCharacter(for: QWERTYVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: [.shift, .option]))
-        XCTAssertEqual(vShiftOptionCharacter, "◊")
-        guard !isInstalledABCKeyboard else { return }
-        uninstallInputSource(id: ABCKeyboardID)
+        #expect(vKeyCode == CGKeyCode(qwertyVKeyCode))
+
+        let vKey = keyboardLayout.currentKey(for: qwertyVKeyCode)
+        #expect(vKey == .v)
+
+        let vCharacter = keyboardLayout.currentCharacter(for: qwertyVKeyCode, carbonModifiers: 0)
+        #expect(vCharacter == "v")
+
+        let vShiftCharacter = keyboardLayout.currentCharacter(for: qwertyVKeyCode, carbonModifiers: shiftKey)
+        #expect(vShiftCharacter == "V")
+
+        let vOptionCharacter = keyboardLayout.currentCharacter(for: qwertyVKeyCode, carbonModifiers: optionKey)
+        #expect(vOptionCharacter == "√")
+
+        let vShiftOptionCharacter = keyboardLayout.currentCharacter(for: qwertyVKeyCode, carbonModifiers: shiftKey | optionKey)
+        #expect(vShiftOptionCharacter == "◊")
     }
 
-    func testKeyCodesForDvorakKeyboard() {
-        let isInstalledDvorakKeyboard = isInstalledInputSource(id: dvorakKeyboardID)
-        XCTAssertTrue(installInputSource(id: dvorakKeyboardID))
-        XCTAssertTrue(selectInputSource(id: dvorakKeyboardID))
+    @Test(
+        .inputSource(enableIDs: [dvorakKeyboardID], selectIDs: [dvorakKeyboardID])
+    )
+    func keyCodesForDvorakKeyboard() {
         let notificationCenter = NotificationCenter()
         let keyboardLayout = KeyboardLayout(notificationCenter: notificationCenter)
+
         let vKeyCode = keyboardLayout.currentKeyCode(for: .v)
-        XCTAssertEqual(vKeyCode, CGKeyCode(DvorakVKeyCode))
-        let vKey = keyboardLayout.currentKey(for: DvorakVKeyCode)
-        XCTAssertEqual(vKey, .v)
-        let vCharacter = keyboardLayout.currentCharacter(for: DvorakVKeyCode, carbonModifiers: 0)
-        XCTAssertEqual(vCharacter, "v")
-        let vShiftCharacter = keyboardLayout.currentCharacter(for: DvorakVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: .shift))
-        XCTAssertEqual(vShiftCharacter, "V")
-        let vOptionCharacter = keyboardLayout.currentCharacter(for: DvorakVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: [.option]))
-        XCTAssertEqual(vOptionCharacter, "√")
-        let vShiftOptionCharacter = keyboardLayout.currentCharacter(for: DvorakVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: [.shift, .option]))
-        XCTAssertEqual(vShiftOptionCharacter, "◊")
-        guard !isInstalledDvorakKeyboard else { return }
-        uninstallInputSource(id: dvorakKeyboardID)
+        #expect(vKeyCode == CGKeyCode(dvorakVKeyCode))
+
+        let vKey = keyboardLayout.currentKey(for: dvorakVKeyCode)
+        #expect(vKey == .v)
+
+        let vCharacter = keyboardLayout.currentCharacter(for: dvorakVKeyCode, carbonModifiers: 0)
+        #expect(vCharacter == "v")
+
+        let vShiftCharacter = keyboardLayout.currentCharacter(for: dvorakVKeyCode, carbonModifiers: shiftKey)
+        #expect(vShiftCharacter == "V")
+
+        let vOptionCharacter = keyboardLayout.currentCharacter(for: dvorakVKeyCode, carbonModifiers: optionKey)
+        #expect(vOptionCharacter == "√")
+
+        let vShiftOptionCharacter = keyboardLayout.currentCharacter(for: dvorakVKeyCode, carbonModifiers: shiftKey | optionKey)
+        #expect(vShiftOptionCharacter == "◊")
     }
 
-    func testKeyCodesJapanesesAndDvorakOnlyKeyboard() {
-        let installedInputSources = fetchInputSource(includeAllInstalled: false)
-        let isInstalledJapaneseKeyboard = isInstalledInputSource(id: japaneseKeyboardID)
-        let isInstalledKotoeriKeyboard = isInstalledInputSource(id: kotoeriKeyboardID)
-        let isInstalledDvorakKeyboard = isInstalledInputSource(id: dvorakKeyboardID)
-        XCTAssertTrue(installInputSource(id: ABCKeyboardID))
-        XCTAssertTrue(installInputSource(id: dvorakKeyboardID))
-        XCTAssertTrue(installInputSource(id: kotoeriKeyboardID))
-        XCTAssertTrue(installInputSource(id: japaneseKeyboardID))
-        XCTAssertTrue(selectInputSource(id: ABCKeyboardID))
-        XCTAssertTrue(selectInputSource(id: japaneseKeyboardID))
-        XCTAssertTrue(uninstallInputSource(id: ABCKeyboardID))
-        installedInputSources.filter { $0.id != japaneseKeyboardID && $0.id != dvorakKeyboardID && !$0.id.contains("Japanese") && !$0.id.contains("Kotoeri") }
-            .forEach { uninstallInputSource(id: $0.id) }
-        let notificationCenter = NotificationCenter()
-        let keyboardLayout = KeyboardLayout(notificationCenter: notificationCenter)
-        let vKeyCode = keyboardLayout.currentKeyCode(for: .v)
-        XCTAssertEqual(vKeyCode, CGKeyCode(QWERTYVKeyCode))
-        let vKey = keyboardLayout.currentKey(for: QWERTYVKeyCode)
-        XCTAssertEqual(vKey, .v)
-        let vCharacter = keyboardLayout.currentCharacter(for: QWERTYVKeyCode, carbonModifiers: 0)
-        XCTAssertEqual(vCharacter, "v")
-        let vShiftCharacter = keyboardLayout.currentCharacter(for: QWERTYVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: .shift))
-        XCTAssertEqual(vShiftCharacter, "V")
-        let vOptionCharacter = keyboardLayout.currentCharacter(for: QWERTYVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: [.option]))
-        XCTAssertEqual(vOptionCharacter, "√")
-        let vShiftOptionCharacter = keyboardLayout.currentCharacter(for: QWERTYVKeyCode, carbonModifiers: modifierTransformer.carbonFlags(from: [.shift, .option]))
-        XCTAssertEqual(vShiftOptionCharacter, "◊")
-        installedInputSources.forEach { installInputSource(id: $0.id) }
-        if !isInstalledJapaneseKeyboard {
-            uninstallInputSource(id: japaneseKeyboardID)
-        }
-        if !isInstalledDvorakKeyboard {
-            uninstallInputSource(id: dvorakKeyboardID)
-        }
-        if !isInstalledKotoeriKeyboard {
-            uninstallInputSource(id: kotoeriKeyboardID)
-        }
-    }
-
-    func testInputSourceChangedNotification() {
-        let isInstalledABCKeyboard = isInstalledInputSource(id: ABCKeyboardID)
-        let isInstalledDvorakKeyboard = isInstalledInputSource(id: dvorakKeyboardID)
-        XCTAssertTrue(installInputSource(id: ABCKeyboardID))
-        XCTAssertTrue(uninstallInputSource(id: dvorakKeyboardID))
-        XCTAssertTrue(selectInputSource(id: ABCKeyboardID))
-        let notificationCenter = NotificationCenter()
-        let keyboardLayout = KeyboardLayout(notificationCenter: notificationCenter)
-        let selectedExpectation = XCTestExpectation(description: "Selected Keycobard Input Source Changed")
-        selectedExpectation.expectedFulfillmentCount = 2
-        selectedExpectation.assertForOverFulfill = true
-        notificationCenter.addObserver(forName: .SauceSelectedKeyboardInputSourceChanged, object: nil, queue: nil) { _ in
-            selectedExpectation.fulfill()
-        }
-        let enabledExpectation = XCTestExpectation(description: "Enabled Keycobard Input Source Changed")
-        notificationCenter.addObserver(forName: .SauceEnabledKeyboardInputSourcesChanged, object: nil, queue: nil) { _ in
-            enabledExpectation.fulfill()
-        }
-        XCTAssertTrue(installInputSource(id: dvorakKeyboardID))
-        XCTAssertTrue(selectInputSource(id: dvorakKeyboardID))
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            XCTAssertTrue(self.selectInputSource(id: self.ABCKeyboardID))
-        }
-        wait(for: [selectedExpectation, enabledExpectation], timeout: 2)
-        if !isInstalledABCKeyboard {
-            uninstallInputSource(id: ABCKeyboardID)
-        }
-        if !isInstalledDvorakKeyboard {
-            uninstallInputSource(id: dvorakKeyboardID)
-        }
-    }
-
-    func testKeyCodesChangedNotification() {
-        let isInstalledABCKeyboard = isInstalledInputSource(id: ABCKeyboardID)
-        let isInstalledDvorakKeyboard = isInstalledInputSource(id: dvorakKeyboardID)
-        XCTAssertTrue(installInputSource(id: ABCKeyboardID))
-        XCTAssertTrue(installInputSource(id: dvorakKeyboardID))
-        XCTAssertTrue(selectInputSource(id: ABCKeyboardID))
-        let notificationCenter = NotificationCenter()
-        let keyboardLayout = KeyboardLayout(notificationCenter: notificationCenter)
-        let expectation = XCTestExpectation(description: "Selected Keycobard Key Codes Changed")
-        expectation.expectedFulfillmentCount = 2
-        expectation.assertForOverFulfill = true
-        notificationCenter.addObserver(forName: .SauceSelectedKeyboardKeyCodesChanged, object: nil, queue: nil) { _ in
-            expectation.fulfill()
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            XCTAssertTrue(self.selectInputSource(id: self.dvorakKeyboardID))
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                XCTAssertTrue(self.selectInputSource(id: self.ABCKeyboardID))
+    @Test(
+        .inputSource(
+            enableIDs: [ABCKeyboardID, dvorakKeyboardID, kotoeriKeyboardID, japaneseKeyboardID],
+            selectIDs: [ABCKeyboardID, japaneseKeyboardID],
+            disableIDs: [ABCKeyboardID]
+        ),
+        .bug("https://github.com/Clipy/Sauce/pull/15")
+    )
+    func keyCodesJapanesesAndDvorakOnlyKeyboard() {
+        InputSource.enabledInputSources
+            .filter {
+                $0.id != Self.japaneseKeyboardID &&
+                $0.id != Self.dvorakKeyboardID &&
+                !$0.id.contains("Japanese") &&
+                !$0.id.contains("Kotoeri")
             }
+            .forEach { $0.disable() }
+
+        let notificationCenter = NotificationCenter()
+        let keyboardLayout = KeyboardLayout(notificationCenter: notificationCenter)
+
+        let vKeyCode = keyboardLayout.currentKeyCode(for: .v)
+        #expect(vKeyCode == CGKeyCode(qwertyVKeyCode))
+
+        let vKey = keyboardLayout.currentKey(for: qwertyVKeyCode)
+        #expect(vKey == .v)
+
+        let vCharacter = keyboardLayout.currentCharacter(for: qwertyVKeyCode, carbonModifiers: 0)
+        #expect(vCharacter == "v")
+
+        let vShiftCharacter = keyboardLayout.currentCharacter(for: qwertyVKeyCode, carbonModifiers: shiftKey)
+        #expect(vShiftCharacter == "V")
+
+        let vOptionCharacter = keyboardLayout.currentCharacter(for: qwertyVKeyCode, carbonModifiers: optionKey)
+        #expect(vOptionCharacter == "√")
+
+        let vShiftOptionCharacter = keyboardLayout.currentCharacter(for: qwertyVKeyCode, carbonModifiers: shiftKey | optionKey)
+        #expect(vShiftOptionCharacter == "◊")
+    }
+
+    @available(macOS 13, *)
+    @Test(
+        .inputSource(
+            enableIDs: [ABCKeyboardID, dvorakKeyboardID],
+            selectIDs: [ABCKeyboardID],
+            disableIDs: [dvorakKeyboardID]
+        ),
+        .timeLimit(.minutes(1))
+    )
+    func inputSourceChangedNotification() async throws {
+        let notificationCenter = NotificationCenter()
+        let keyboardLayout = KeyboardLayout(notificationCenter: notificationCenter)
+
+        let selectedSourceChanged = notificationCenter.notifications(named: .SauceSelectedKeyboardInputSourceChanged)
+        let enabledSourceChanged = notificationCenter.notifications(named: .SauceEnabledKeyboardInputSourcesChanged)
+        let selectedSourceTask = Task<Int, Never> { @MainActor in
+            var count = 0
+            for await _ in selectedSourceChanged {
+                count += 1
+                if count == 2 {
+                    break
+                }
+            }
+            return count
         }
-        wait(for: [expectation], timeout: 2)
-        if !isInstalledABCKeyboard {
-            uninstallInputSource(id: ABCKeyboardID)
+        let enabledSourceTask = Task<Int, Never> { @MainActor in
+            var count = 0
+            for await _ in enabledSourceChanged {
+                count += 1
+                if count == 1 {
+                    break
+                }
+            }
+            return count
         }
-        if !isInstalledDvorakKeyboard {
-            uninstallInputSource(id: dvorakKeyboardID)
+
+        let abcInputSource = try #require(InputSource.allInputSources.first { $0.id == Self.ABCKeyboardID })
+        let dvorakInputSource = try #require(InputSource.allInputSources.first { $0.id == Self.dvorakKeyboardID })
+
+        #expect(dvorakInputSource.enable())
+        #expect(dvorakInputSource.select())
+        try await Task.sleep(for: .milliseconds(500))
+        #expect(abcInputSource.select())
+
+        #expect((await selectedSourceTask.value) == 2)
+        #expect((await enabledSourceTask.value) == 1)
+
+        withExtendedLifetime(keyboardLayout) {}
+    }
+
+    @available(macOS 13, *)
+    @Test(
+        .inputSource(
+            enableIDs: [ABCKeyboardID, dvorakKeyboardID],
+            selectIDs: [ABCKeyboardID]
+        ),
+        .timeLimit(.minutes(1))
+    )
+    func keyCodesChangedNotification() async throws {
+        let notificationCenter = NotificationCenter()
+        let keyboardLayout = KeyboardLayout(notificationCenter: notificationCenter)
+
+        let keyCodesChanged = notificationCenter.notifications(named: .SauceSelectedKeyboardKeyCodesChanged)
+        let keyCodesTask = Task<Int, Never> { @MainActor in
+            var count = 0
+            for await _ in keyCodesChanged {
+                count += 1
+                if count == 2 {
+                    break
+                }
+            }
+            return count
         }
-    }
 
-    // MARK: - Util
-    private func fetchInputSource(includeAllInstalled: Bool) -> [InputSource] {
-        guard let sources = TISCreateInputSourceList([:] as CFDictionary, includeAllInstalled).takeUnretainedValue() as? [TISInputSource] else { return [] }
-        return sources.map { InputSource(source: $0) }
-    }
+        let abcInputSource = try #require(InputSource.allInputSources.first { $0.id == Self.ABCKeyboardID })
+        let dvorakInputSource = try #require(InputSource.allInputSources.first { $0.id == Self.dvorakKeyboardID })
 
-    private func isInstalledInputSource(id: String) -> Bool {
-        return fetchInputSource(includeAllInstalled: false).contains(where: { $0.id == id })
-    }
+        #expect(dvorakInputSource.select())
+        try await Task.sleep(for: .milliseconds(500))
+        #expect(abcInputSource.select())
 
-    @discardableResult
-    private func installInputSource(id: String) -> Bool {
-        let allInputSources = fetchInputSource(includeAllInstalled: true)
-        guard let targetInputSource = allInputSources.first(where: { $0.id == id }) else { return false }
-        return TISEnableInputSource(targetInputSource.source) == noErr
-    }
+        #expect((await keyCodesTask.value) == 2)
 
-    @discardableResult
-    private func uninstallInputSource(id: String) -> Bool {
-        let installedInputSources = fetchInputSource(includeAllInstalled: false)
-        guard let targetInputSource = installedInputSources.first(where: { $0.id == id }) else { return true }
-        return TISDisableInputSource(targetInputSource.source) == noErr
-    }
-
-    @discardableResult
-    private func selectInputSource(id: String) -> Bool {
-        let installedInputSources = self.fetchInputSource(includeAllInstalled: false)
-        guard let targetInputSource = installedInputSources.first(where: { $0.id == id }) else { return false }
-        return TISSelectInputSource(targetInputSource.source) == noErr
+        withExtendedLifetime(keyboardLayout) {}
     }
 }
