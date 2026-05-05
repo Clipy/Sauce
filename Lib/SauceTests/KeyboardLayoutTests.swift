@@ -124,7 +124,7 @@ final class KeyboardLayoutTests {
         ),
         .bug("https://github.com/Clipy/Sauce/pull/15")
     )
-    func keyCodesJapanesesAndDvorakOnlyKeyboard() async {
+    func keyCodesJapanesesAndDvorakOnlyKeyboard() {
         InputSource.enabledInputSources
             .filter {
                 $0.id != Self.japaneseKeyboardID &&
