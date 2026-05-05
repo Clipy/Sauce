@@ -1,5 +1,5 @@
 // 
-//  KeyModifier.swift
+//  KeyMappingModifiers.swift
 //
 //  Sauce
 //  GitHub: https://github.com/clipy
@@ -10,8 +10,8 @@
 
 import Carbon
 
-internal enum KeyModifier: CaseIterable {
-    case none
+internal enum KeyMappingModifiers: CaseIterable {
+    case unmodified
     /// State when the ⌘ key is pressed
     /// Supports keyboard that change key layout when ⌘ is pressd, such as `Dvorak - QWERTY ⌘`
     case withCommand
@@ -21,14 +21,14 @@ internal enum KeyModifier: CaseIterable {
         if (carbonModifiers & cmdKey) != 0 {
             self = .withCommand
         } else {
-            self = .none
+            self = .unmodified
         }
     }
 
     // MARK: - Properties
     var carbonModifier: Int {
         switch self {
-        case .none:
+        case .unmodified:
             return 0
         case .withCommand:
             return cmdKey

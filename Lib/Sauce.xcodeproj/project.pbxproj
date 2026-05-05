@@ -13,7 +13,7 @@
 		5058247B261C6FA400AD2DD8 /* NSMenuItem+KeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5058247A261C6FA400AD2DD8 /* NSMenuItem+KeyTests.swift */; };
 		C57C16682F06CE9B00507D0B /* InputSourceTrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57C16672F06CE7A00507D0B /* InputSourceTrait.swift */; };
 		C57C166B2F06D20B00507D0B /* InputSource+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57C166A2F06D1FB00507D0B /* InputSource+Extensions.swift */; };
-		C5911E052FA8985500C06D99 /* KeyModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5911E012FA8985500C06D99 /* KeyModifier.swift */; };
+		C5911E052FA8985500C06D99 /* KeyMappingModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5911E012FA8985500C06D99 /* KeyMappingModifiers.swift */; };
 		C5911E062FA8985500C06D99 /* SpecialKeyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5911E022FA8985500C06D99 /* SpecialKeyCode.swift */; };
 		C5911E072FA8985500C06D99 /* TISInputSource+Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5911E032FA8985500C06D99 /* TISInputSource+Property.swift */; };
 		C5911E082FA8985500C06D99 /* KeyboardLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5911E002FA8985500C06D99 /* KeyboardLayout.swift */; };
@@ -42,7 +42,7 @@
 		C57C16672F06CE7A00507D0B /* InputSourceTrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSourceTrait.swift; sourceTree = "<group>"; };
 		C57C166A2F06D1FB00507D0B /* InputSource+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InputSource+Extensions.swift"; sourceTree = "<group>"; };
 		C5911E002FA8985500C06D99 /* KeyboardLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLayout.swift; sourceTree = "<group>"; };
-		C5911E012FA8985500C06D99 /* KeyModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyModifier.swift; sourceTree = "<group>"; };
+		C5911E012FA8985500C06D99 /* KeyMappingModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyMappingModifiers.swift; sourceTree = "<group>"; };
 		C5911E022FA8985500C06D99 /* SpecialKeyCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialKeyCode.swift; sourceTree = "<group>"; };
 		C5911E032FA8985500C06D99 /* TISInputSource+Property.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TISInputSource+Property.swift"; sourceTree = "<group>"; };
 		FAA41320210E2C730097D522 /* Sauce.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Sauce.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -94,7 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				C5911E002FA8985500C06D99 /* KeyboardLayout.swift */,
-				C5911E012FA8985500C06D99 /* KeyModifier.swift */,
+				C5911E012FA8985500C06D99 /* KeyMappingModifiers.swift */,
 				C5911E022FA8985500C06D99 /* SpecialKeyCode.swift */,
 				C5911E032FA8985500C06D99 /* TISInputSource+Property.swift */,
 			);
@@ -261,7 +261,7 @@
 				FAA41365210E2D9B0097D522 /* Sauce.swift in Sources */,
 				FAA41367210E2EFB0097D522 /* Key.swift in Sources */,
 				095EF0012456ED9A00174829 /* ModifierTransformer.swift in Sources */,
-				C5911E052FA8985500C06D99 /* KeyModifier.swift in Sources */,
+				C5911E052FA8985500C06D99 /* KeyMappingModifiers.swift in Sources */,
 				C5911E062FA8985500C06D99 /* SpecialKeyCode.swift in Sources */,
 				C5911E072FA8985500C06D99 /* TISInputSource+Property.swift in Sources */,
 				C5911E082FA8985500C06D99 /* KeyboardLayout.swift in Sources */,

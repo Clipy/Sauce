@@ -16,7 +16,7 @@ internal final class KeyboardLayout {
     // MARK: - Properties
     private var currentKeyboardLayoutInputSource: InputSource
     private var currentASCIICapableInputSource: InputSource
-    private var mappedKeyCodes = [InputSource: [KeyModifier: [Key: CGKeyCode]]]()
+    private var mappedKeyCodes = [InputSource: [KeyMappingModifiers: [Key: CGKeyCode]]]()
     private(set) var inputSources = [InputSource]()
 
     private let distributedNotificationCenter: DistributedNotificationCenter
@@ -143,8 +143,8 @@ private extension KeyboardLayout {
     func mappingKeyCodes(with source: InputSource) {
         guard let layoutData = TISGetInputSourceProperty(source.source, kTISPropertyUnicodeKeyLayoutData) else { return }
         let data = Unmanaged<CFData>.fromOpaque(layoutData).takeUnretainedValue() as Data
-        var codes = [KeyModifier: [Key: CGKeyCode]]()
-        KeyModifier.allCases.forEach { keyModifier in
+        var codes = [KeyMappingModifiers: [Key: CGKeyCode]]()
+        KeyMappingModifiers.allCases.forEach { keyModifier in
             var keyCodes = [Key: CGKeyCode]()
             for i in 0..<128 {
                 guard let character = character(with: data, keyCode: i, carbonModifiers: keyModifier.carbonModifier) else { continue }
@@ -160,10 +160,10 @@ private extension KeyboardLayout {
     func character(with source: TISInputSource, keyCode: Int, carbonModifiers: Int) -> String? {
         guard let layoutData = TISGetInputSourceProperty(source, kTISPropertyUnicodeKeyLayoutData) else { return nil }
         let data = Unmanaged<CFData>.fromOpaque(layoutData).takeUnretainedValue() as Data
-        let keyModifier = KeyModifier(carbonModifiers: carbonModifiers)
+        let mappingModifiers = KeyMappingModifiers(carbonModifiers: carbonModifiers)
         var carbonModifiers = modifierTransformer.convertCharactorSupportCarbonModifiers(from: carbonModifiers)
-        switch keyModifier {
-        case .none:
+        switch mappingModifiers {
+        case .unmodified:
             return character(with: data, keyCode: keyCode, carbonModifiers: carbonModifiers)
         case .withCommand:
             /// Determines if it's a special keyboard environment by comparing the string output with and without the ⌘ key pressed
@@ -181,7 +181,7 @@ private extension KeyboardLayout {
             /// In `Dvorak - QWERTY ⌘`, `⌘ + Shift + 9` should yield `V`, but since modifier keys are not considered, `v` is always returned.
             guard let commandCharacter,
                   let key = Key(character: commandCharacter, virtualKeyCode: keyCode),
-                  let noMofifierKeyCode = mappedKeyCodes[.init(source: source)]?[.none]?.first(where: { $0.key == key })?.value
+                  let noMofifierKeyCode = mappedKeyCodes[.init(source: source)]?[.unmodified]?.first(where: { $0.key == key })?.value
             else {
                 /// If mapping is not possible, ignore modifiers other than ⌘ and return a value as close as possible to the key input
                 carbonModifiers |= cmdKey
