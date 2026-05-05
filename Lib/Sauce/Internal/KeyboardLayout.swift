@@ -176,16 +176,18 @@ private extension KeyboardLayout {
                 /// If the outputs are the same, it's a regular keyboard, so return the string excluding the ⌘ key
                 return character(with: data, keyCode: keyCode, carbonModifiers: carbonModifiers)
             }
-            /// Workaround: To get a string with modifiers other than ⌘ key working, obtain the keycode for the standard key layout and generate the string
+            /// Workaround: `CoreServices.UCKeyTranslate` does not account for modifiers other than ⌘ on keyboards whose layout changes when the ⌘ key is pressed,
+            /// so other modifier inputs are emulated using the keyboard layout for the unmodified state.
+            /// In `Dvorak - QWERTY ⌘`, `⌘ + Shift + 9` should yield `V`, but since modifier keys are not considered, `v` is always returned.
             guard let commandCharacter,
                   let key = Key(character: commandCharacter, virtualKeyCode: keyCode),
-                  let keyCode = mappedKeyCodes[.init(source: source)]?[.none]?.first(where: { $0.key == key })?.value
+                  let noMofifierKeyCode = mappedKeyCodes[.init(source: source)]?[.none]?.first(where: { $0.key == key })?.value
             else {
                 /// If mapping is not possible, ignore modifiers other than ⌘ and return a value as close as possible to the key input
                 carbonModifiers |= cmdKey
                 return character(with: data, keyCode: keyCode, carbonModifiers: carbonModifiers)
             }
-            return character(with: data, keyCode: Int(keyCode), carbonModifiers: carbonModifiers)
+            return character(with: data, keyCode: Int(noMofifierKeyCode), carbonModifiers: carbonModifiers)
         }
     }
 
