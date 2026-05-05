@@ -56,7 +56,7 @@ internal extension KeyboardLayout {
     }
 
     func keyCode(with source: InputSource, key: Key, carbonModifiers: Int) -> CGKeyCode? {
-        return mappedKeyCodes[source]?[.init(carbonModifiers: carbonModifiers)]?[key]
+        return keyCodes(with: source, carbonModifiers: carbonModifiers)?[key]
     }
 }
 
@@ -67,7 +67,7 @@ internal extension KeyboardLayout {
     }
 
     func key(with source: InputSource, keyCode: Int, carbonModifiers: Int) -> Key? {
-        return mappedKeyCodes[source]?[.init(carbonModifiers: carbonModifiers)]?.first(where: { $0.value == CGKeyCode(keyCode) })?.key
+        return keyCodes(with: source, carbonModifiers: carbonModifiers)?.first(where: { $0.value == CGKeyCode(keyCode) })?.key
     }
 }
 
