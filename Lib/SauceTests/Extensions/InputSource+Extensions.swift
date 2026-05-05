@@ -24,6 +24,7 @@ extension InputSource {
         return sourceList?.map { InputSource(source: $0) } ?? []
     }
 
+    @discardableResult
     func enable() -> Bool {
         TISEnableInputSource(source) == noErr
     }
