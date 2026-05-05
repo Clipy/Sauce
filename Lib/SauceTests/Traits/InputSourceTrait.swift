@@ -8,6 +8,7 @@
 //  Copyright © 2015 Clipy Project.
 //
 
+import Carbon
 import Testing
 @testable import Sauce
 
@@ -15,13 +16,13 @@ import Testing
 struct InputSourceTrait: TestTrait, TestScoping {
     let enableIDs: [String]
     let selectIDs: [String]
-    let disableIDs: [String]
 
     func provideScope(
         for test: Test,
         testCase: Test.Case?,
         performing function: () async throws -> Void
     ) async throws {
+        let selectedInputSource = InputSource(source: TISCopyCurrentKeyboardLayoutInputSource().takeUnretainedValue())
         let allInputSources = InputSource.allInputSources
         let enabledInputSources = InputSource.enabledInputSources
         let enableInputSources = try enableIDs.map { id in
@@ -30,23 +31,8 @@ struct InputSourceTrait: TestTrait, TestScoping {
         let selectInputSources = try selectIDs.map { id in
             try #require(allInputSources.first { $0.id == id })
         }
-        let disableInputSources = try disableIDs.map { id in
-            try #require(allInputSources.first { $0.id == id })
-        }
-
-        let deferDisabledInputSources = enableInputSources.filter { inputSource in
-            enabledInputSources.map(\.id).contains(inputSource.id) == false
-        }
-        let deferEnabledInputSources = disableInputSources.filter { inputSource in
-            enabledInputSources.map(\.id).contains(inputSource.id) == true
-        }
-        defer {
-            deferEnabledInputSources.forEach { inputSource in
-                #expect(inputSource.enable())
-            }
-            deferDisabledInputSources.forEach { inputSource in
-                #expect(inputSource.disable())
-            }
+        let disableInputSources = enabledInputSources.filter { inputSource in
+            !enableIDs.contains(inputSource.id)
         }
 
         enableInputSources.forEach { inputSource in
@@ -59,6 +45,14 @@ struct InputSourceTrait: TestTrait, TestScoping {
             #expect(inputSource.disable())
         }
 
+        defer {
+            InputSource.enabledInputSources.filter { !enabledInputSources.contains($0) }
+                .forEach { $0.disable() }
+            enabledInputSources
+                .forEach { $0.enable() }
+            selectedInputSource.select()
+        }
+
         try await function()
     }
 }
@@ -66,9 +60,8 @@ struct InputSourceTrait: TestTrait, TestScoping {
 extension Trait where Self == InputSourceTrait {
     static func inputSource(
         enableIDs: [String] = [],
-        selectIDs: [String] = [],
-        disableIDs: [String] = []
+        selectIDs: [String] = []
     ) -> InputSourceTrait {
-        InputSourceTrait(enableIDs: enableIDs, selectIDs: selectIDs, disableIDs: disableIDs)
+        InputSourceTrait(enableIDs: enableIDs, selectIDs: selectIDs)
     }
 }

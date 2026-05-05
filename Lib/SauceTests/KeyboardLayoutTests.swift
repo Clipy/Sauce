@@ -54,7 +54,7 @@ final class KeyboardLayoutTests {
     }
 
     @Test(
-        .inputSource(enableIDs: [dvorakKeyboardID], selectIDs: [dvorakKeyboardID])
+        .inputSource(enableIDs: [ABCKeyboardID, dvorakKeyboardID], selectIDs: [dvorakKeyboardID])
     )
     func keyCodesForDvorakKeyboard() {
         let notificationCenter = NotificationCenter()
@@ -80,7 +80,7 @@ final class KeyboardLayoutTests {
     }
 
     @Test(
-        .inputSource(enableIDs: [dvorakQWERTYKeyboardID], selectIDs: [dvorakQWERTYKeyboardID])
+        .inputSource(enableIDs: [ABCKeyboardID, dvorakQWERTYKeyboardID], selectIDs: [dvorakQWERTYKeyboardID])
     )
     func keyCodesForDvorakQWERTYKeyboard() {
         let notificationCenter = NotificationCenter()
@@ -120,8 +120,7 @@ final class KeyboardLayoutTests {
     @Test(
         .inputSource(
             enableIDs: [ABCKeyboardID, dvorakKeyboardID, kotoeriKeyboardID, japaneseKeyboardID],
-            selectIDs: [ABCKeyboardID, japaneseKeyboardID],
-            disableIDs: [ABCKeyboardID]
+            selectIDs: [ABCKeyboardID, japaneseKeyboardID]
         ),
         .bug("https://github.com/Clipy/Sauce/pull/15")
     )
@@ -159,11 +158,7 @@ final class KeyboardLayoutTests {
 
     @available(macOS 13, *)
     @Test(
-        .inputSource(
-            enableIDs: [ABCKeyboardID, dvorakKeyboardID],
-            selectIDs: [ABCKeyboardID],
-            disableIDs: [dvorakKeyboardID]
-        ),
+        .inputSource(enableIDs: [ABCKeyboardID], selectIDs: [ABCKeyboardID]),
         .timeLimit(.minutes(1))
     )
     func inputSourceChangedNotification() async throws {
@@ -198,7 +193,7 @@ final class KeyboardLayoutTests {
 
         #expect(dvorakInputSource.enable())
         #expect(dvorakInputSource.select())
-        try await Task.sleep(for: .milliseconds(500))
+        try await Task.sleep(for: .seconds(1))
         #expect(abcInputSource.select())
 
         #expect((await selectedSourceTask.value) == 2)
@@ -235,7 +230,7 @@ final class KeyboardLayoutTests {
         let dvorakInputSource = try #require(InputSource.allInputSources.first { $0.id == Self.dvorakKeyboardID })
 
         #expect(dvorakInputSource.select())
-        try await Task.sleep(for: .milliseconds(500))
+        try await Task.sleep(for: .seconds(1))
         #expect(abcInputSource.select())
 
         #expect((await keyCodesTask.value) == 2)
