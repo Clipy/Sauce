@@ -19,6 +19,7 @@ final class KeyboardLayoutTests {
     // MARK: - Properties
     private static let ABCKeyboardID = "com.apple.keylayout.ABC"
     private static let dvorakKeyboardID = "com.apple.keylayout.Dvorak"
+    private static let dvorakQWERTYKeyboardID = "com.apple.keylayout.DVORAK-QWERTYCMD"
     private static let japaneseKeyboardID = "com.apple.inputmethod.Kotoeri.RomajiTyping.Japanese"
     private static let kotoeriKeyboardID = "com.apple.inputmethod.Kotoeri.RomajiTyping"
     private let qwertyVKeyCode = 9
@@ -26,28 +27,29 @@ final class KeyboardLayoutTests {
 
     // MARK: - Tests
     @Test(
-        .inputSource(enableIDs: [ABCKeyboardID], selectIDs: [ABCKeyboardID])
+        .inputSource(enableIDs: [ABCKeyboardID], selectIDs: [ABCKeyboardID]),
+        arguments: [0, cmdKey]
     )
-    func keyCodesForABCKeyboard() {
+    func keyCodesForABCKeyboard(carbonModifier: Int) {
         let notificationCenter = NotificationCenter()
         let keyboardLayout = KeyboardLayout(notificationCenter: notificationCenter)
 
-        let vKeyCode = keyboardLayout.currentKeyCode(for: .v)
+        let vKeyCode = keyboardLayout.currentKeyCode(for: .v, carbonModifiers: carbonModifier)
         #expect(vKeyCode == CGKeyCode(qwertyVKeyCode))
 
-        let vKey = keyboardLayout.currentKey(for: qwertyVKeyCode)
+        let vKey = keyboardLayout.currentKey(for: qwertyVKeyCode, carbonModifiers: carbonModifier)
         #expect(vKey == .v)
 
-        let vCharacter = keyboardLayout.currentCharacter(for: qwertyVKeyCode, carbonModifiers: 0)
+        let vCharacter = keyboardLayout.currentCharacter(for: qwertyVKeyCode, carbonModifiers: carbonModifier)
         #expect(vCharacter == "v")
 
-        let vShiftCharacter = keyboardLayout.currentCharacter(for: qwertyVKeyCode, carbonModifiers: shiftKey)
+        let vShiftCharacter = keyboardLayout.currentCharacter(for: qwertyVKeyCode, carbonModifiers: shiftKey | carbonModifier)
         #expect(vShiftCharacter == "V")
 
-        let vOptionCharacter = keyboardLayout.currentCharacter(for: qwertyVKeyCode, carbonModifiers: optionKey)
+        let vOptionCharacter = keyboardLayout.currentCharacter(for: qwertyVKeyCode, carbonModifiers: optionKey | carbonModifier)
         #expect(vOptionCharacter == "√")
 
-        let vShiftOptionCharacter = keyboardLayout.currentCharacter(for: qwertyVKeyCode, carbonModifiers: shiftKey | optionKey)
+        let vShiftOptionCharacter = keyboardLayout.currentCharacter(for: qwertyVKeyCode, carbonModifiers: shiftKey | optionKey | carbonModifier)
         #expect(vShiftOptionCharacter == "◊")
     }
 
@@ -58,10 +60,10 @@ final class KeyboardLayoutTests {
         let notificationCenter = NotificationCenter()
         let keyboardLayout = KeyboardLayout(notificationCenter: notificationCenter)
 
-        let vKeyCode = keyboardLayout.currentKeyCode(for: .v)
+        let vKeyCode = keyboardLayout.currentKeyCode(for: .v, carbonModifiers: 0)
         #expect(vKeyCode == CGKeyCode(dvorakVKeyCode))
 
-        let vKey = keyboardLayout.currentKey(for: dvorakVKeyCode)
+        let vKey = keyboardLayout.currentKey(for: dvorakVKeyCode, carbonModifiers: 0)
         #expect(vKey == .v)
 
         let vCharacter = keyboardLayout.currentCharacter(for: dvorakVKeyCode, carbonModifiers: 0)
@@ -75,6 +77,44 @@ final class KeyboardLayoutTests {
 
         let vShiftOptionCharacter = keyboardLayout.currentCharacter(for: dvorakVKeyCode, carbonModifiers: shiftKey | optionKey)
         #expect(vShiftOptionCharacter == "◊")
+    }
+
+    @Test(
+        .inputSource(enableIDs: [dvorakQWERTYKeyboardID], selectIDs: [dvorakQWERTYKeyboardID])
+    )
+    func keyCodesForDvorakQWERTYKeyboard() {
+        let notificationCenter = NotificationCenter()
+        let keyboardLayout = KeyboardLayout(notificationCenter: notificationCenter)
+
+        let vKeyCode = keyboardLayout.currentKeyCode(for: .v, carbonModifiers: 0)
+        let vCommandKeyCode = keyboardLayout.currentKeyCode(for: .v, carbonModifiers: cmdKey)
+        #expect(vKeyCode == CGKeyCode(dvorakVKeyCode))
+        #expect(vCommandKeyCode == CGKeyCode(qwertyVKeyCode))
+
+        let vKey = keyboardLayout.currentKey(for: dvorakVKeyCode, carbonModifiers: 0)
+        let vCommandKey = keyboardLayout.currentKey(for: qwertyVKeyCode, carbonModifiers: cmdKey)
+        #expect(vKey == .v)
+        #expect(vCommandKey == .v)
+
+        let vCharacter = keyboardLayout.currentCharacter(for: dvorakVKeyCode, carbonModifiers: 0)
+        let vCommandCharacter = keyboardLayout.currentCharacter(for: qwertyVKeyCode, carbonModifiers: cmdKey)
+        #expect(vCharacter == "v")
+        #expect(vCommandCharacter == "v")
+
+        let vShiftCharacter = keyboardLayout.currentCharacter(for: dvorakVKeyCode, carbonModifiers: shiftKey)
+        let vCommandShiftCharacter = keyboardLayout.currentCharacter(for: qwertyVKeyCode, carbonModifiers: cmdKey | shiftKey)
+        #expect(vShiftCharacter == "V")
+        #expect(vCommandShiftCharacter == "V")
+
+        let vOptionCharacter = keyboardLayout.currentCharacter(for: dvorakVKeyCode, carbonModifiers: optionKey)
+        let vCommandOptionCharacter = keyboardLayout.currentCharacter(for: qwertyVKeyCode, carbonModifiers: cmdKey | optionKey)
+        #expect(vOptionCharacter == "√")
+        #expect(vCommandOptionCharacter == "√")
+
+        let vShiftOptionCharacter = keyboardLayout.currentCharacter(for: dvorakVKeyCode, carbonModifiers: shiftKey | optionKey)
+        let vCommandShiftOptionCharacter = keyboardLayout.currentCharacter(for: qwertyVKeyCode, carbonModifiers: cmdKey | shiftKey | optionKey)
+        #expect(vShiftOptionCharacter == "◊")
+        #expect(vCommandShiftOptionCharacter == "◊")
     }
 
     @Test(
@@ -98,10 +138,10 @@ final class KeyboardLayoutTests {
         let notificationCenter = NotificationCenter()
         let keyboardLayout = KeyboardLayout(notificationCenter: notificationCenter)
 
-        let vKeyCode = keyboardLayout.currentKeyCode(for: .v)
+        let vKeyCode = keyboardLayout.currentKeyCode(for: .v, carbonModifiers: 0)
         #expect(vKeyCode == CGKeyCode(qwertyVKeyCode))
 
-        let vKey = keyboardLayout.currentKey(for: qwertyVKeyCode)
+        let vKey = keyboardLayout.currentKey(for: qwertyVKeyCode, carbonModifiers: 0)
         #expect(vKey == .v)
 
         let vCharacter = keyboardLayout.currentCharacter(for: qwertyVKeyCode, carbonModifiers: 0)
