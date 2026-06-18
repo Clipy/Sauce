@@ -34,65 +34,65 @@ open class Sauce {
 }
 
 // MARK: - Input Sources
-extension Sauce {
-    public func currentInputSources() -> [InputSource] {
+public extension Sauce {
+    func currentInputSources() -> [InputSource] {
         return layout.inputSources
     }
 }
 
 // MARK: - KeyCodes
-extension Sauce {
-    public func keyCode(for key: Key, modifiers: SauceModifiers = .none) -> CGKeyCode {
+public extension Sauce {
+    func keyCode(for key: Key, modifiers: SauceModifiers = .none) -> CGKeyCode {
         return currentKeyCode(for: key, modifiers: modifiers) ?? key.QWERTYKeyCode
     }
 
-    public func currentKeyCode(for key: Key, modifiers: SauceModifiers = .none) -> CGKeyCode? {
+    func currentKeyCode(for key: Key, modifiers: SauceModifiers = .none) -> CGKeyCode? {
         return layout.currentKeyCode(for: key, carbonModifiers: modifierTransformar.carbonFlags(from: modifiers))
     }
 
-    public func currentKeyCodes(modifiers: SauceModifiers = .none) -> [Key: CGKeyCode]? {
+    func currentKeyCodes(modifiers: SauceModifiers = .none) -> [Key: CGKeyCode]? {
         return layout.currentKeyCodes(carbonModifiers: modifierTransformar.carbonFlags(from: modifiers))
     }
 
-    public func keyCode(with source: InputSource, key: Key, modifiers: SauceModifiers = .none) -> CGKeyCode? {
+    func keyCode(with source: InputSource, key: Key, modifiers: SauceModifiers = .none) -> CGKeyCode? {
         return layout.keyCode(with: source, key: key, carbonModifiers: modifierTransformar.carbonFlags(from: modifiers))
     }
 
-    public func keyCodes(with source: InputSource, modifiers: SauceModifiers = .none) -> [Key: CGKeyCode]? {
+    func keyCodes(with source: InputSource, modifiers: SauceModifiers = .none) -> [Key: CGKeyCode]? {
         return layout.keyCodes(with: source, carbonModifiers: modifierTransformar.carbonFlags(from: modifiers))
     }
 }
 
 // MARK: - Key
-extension Sauce {
-    public func key(for keyCode: Int, modifiers: SauceModifiers = .none) -> Key? {
+public extension Sauce {
+    func key(for keyCode: Int, modifiers: SauceModifiers = .none) -> Key? {
         return currentKey(for: keyCode, modifiers: modifiers) ?? Key(QWERTYKeyCode: keyCode)
     }
 
-    public func currentKey(for keyCode: Int, modifiers: SauceModifiers = .none) -> Key? {
+    func currentKey(for keyCode: Int, modifiers: SauceModifiers = .none) -> Key? {
         return layout.currentKey(for: keyCode, carbonModifiers: modifierTransformar.carbonFlags(from: modifiers))
     }
 
-    public func key(with source: InputSource, keyCode: Int, modifiers: SauceModifiers = .none) -> Key? {
+    func key(with source: InputSource, keyCode: Int, modifiers: SauceModifiers = .none) -> Key? {
         return layout.key(with: source, keyCode: keyCode, carbonModifiers: modifierTransformar.carbonFlags(from: modifiers))
     }
 }
 
 // MARK: - Characters
-extension Sauce {
-    public func character(for keyCode: Int, modifiers: SauceModifiers = .none) -> String? {
+public extension Sauce {
+    func character(for keyCode: Int, modifiers: SauceModifiers = .none) -> String? {
         return currentCharacter(for: keyCode, modifiers: modifiers) ?? currentASCIICapableCharacter(for: keyCode, modifiers: modifiers)
     }
 
-    public func currentCharacter(for keyCode: Int, modifiers: SauceModifiers = .none) -> String? {
+    func currentCharacter(for keyCode: Int, modifiers: SauceModifiers = .none) -> String? {
         return layout.currentCharacter(for: keyCode, carbonModifiers: modifierTransformar.carbonFlags(from: modifiers))
     }
 
-    public func currentASCIICapableCharacter(for keyCode: Int, modifiers: SauceModifiers = .none) -> String? {
+    func currentASCIICapableCharacter(for keyCode: Int, modifiers: SauceModifiers = .none) -> String? {
         return layout.currentASCIICapableCharacter(for: keyCode, carbonModifiers: modifierTransformar.carbonFlags(from: modifiers))
     }
 
-    public func character(with source: InputSource, keyCode: Int, modifiers: SauceModifiers = .none) -> String? {
+    func character(with source: InputSource, keyCode: Int, modifiers: SauceModifiers = .none) -> String? {
         return layout.character(with: source, keyCode: keyCode, carbonModifiers: modifierTransformar.carbonFlags(from: modifiers))
     }
 }
