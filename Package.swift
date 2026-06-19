@@ -14,14 +14,11 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "Sauce",
-            dependencies: [],
-            path: "Lib/Sauce"
+            name: "Sauce"
         ),
         .testTarget(
             name: "SauceTests",
             dependencies: ["Sauce"],
-            path: "Lib/SauceTests"
         ),
     ],
     swiftLanguageVersions: [.v5]
