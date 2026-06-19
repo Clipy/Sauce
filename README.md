@@ -35,8 +35,8 @@ let key = Sauce.shared.key(for: keyCode)
 Get the character of the current input source.
 
 ```swift
-let character = Sauce.shared.character(for: keyCode, carbonModifiers: shiftKey)
-let character = Sauce.shared.character(for: keyCode, cocoaModifiers: [.shift])
+let character = Sauce.shared.character(for: keyCode, modifiers: .carbon(shiftKey))
+let character = Sauce.shared.character(for: keyCode, modifiers: .cocoa([.shift]))
 ```
 
 ## Notification

@@ -34,114 +34,66 @@ open class Sauce {
 }
 
 // MARK: - Input Sources
-extension Sauce {
-    public func currentInputSources() -> [InputSource] {
+public extension Sauce {
+    func currentInputSources() -> [InputSource] {
         return layout.inputSources
     }
 }
 
 // MARK: - KeyCodes
-extension Sauce {
-    public func keyCode(for key: Key, carbonModifiers: Int = 0) -> CGKeyCode {
-        return currentKeyCode(for: key, carbonModifiers: carbonModifiers) ?? key.QWERTYKeyCode
+public extension Sauce {
+    func keyCode(for key: Key, modifiers: SauceModifiers = .none) -> CGKeyCode {
+        return currentKeyCode(for: key, modifiers: modifiers) ?? key.QWERTYKeyCode
     }
 
-    public func keyCode(for key: Key, cocoaModifiers: NSEvent.ModifierFlags) -> CGKeyCode {
-        return keyCode(for: key, carbonModifiers: modifierTransformar.carbonFlags(from: cocoaModifiers))
+    func currentKeyCode(for key: Key, modifiers: SauceModifiers = .none) -> CGKeyCode? {
+        return layout.currentKeyCode(for: key, carbonModifiers: modifierTransformar.carbonFlags(from: modifiers))
     }
 
-    public func currentKeyCode(for key: Key, carbonModifiers: Int = 0) -> CGKeyCode? {
-        return layout.currentKeyCode(for: key, carbonModifiers: carbonModifiers)
+    func currentKeyCodes(modifiers: SauceModifiers = .none) -> [Key: CGKeyCode]? {
+        return layout.currentKeyCodes(carbonModifiers: modifierTransformar.carbonFlags(from: modifiers))
     }
 
-    public func currentKeyCode(for key: Key, cocoaModifiers: NSEvent.ModifierFlags) -> CGKeyCode? {
-        return currentKeyCode(for: key, carbonModifiers: modifierTransformar.carbonFlags(from: cocoaModifiers))
+    func keyCode(with source: InputSource, key: Key, modifiers: SauceModifiers = .none) -> CGKeyCode? {
+        return layout.keyCode(with: source, key: key, carbonModifiers: modifierTransformar.carbonFlags(from: modifiers))
     }
 
-    public func currentKeyCodes(carbonModifiers: Int = 0) -> [Key: CGKeyCode]? {
-        return layout.currentKeyCodes(carbonModifiers: carbonModifiers)
-    }
-
-    public func currentKeyCodes(cocoaModifiers: NSEvent.ModifierFlags) -> [Key: CGKeyCode]? {
-        return currentKeyCodes(carbonModifiers: modifierTransformar.carbonFlags(from: cocoaModifiers))
-    }
-
-    public func keyCode(with source: InputSource, key: Key, carbonModifiers: Int = 0) -> CGKeyCode? {
-        return layout.keyCode(with: source, key: key, carbonModifiers: carbonModifiers)
-    }
-
-    public func keyCode(with source: InputSource, key: Key, cocoaModifiers: NSEvent.ModifierFlags) -> CGKeyCode? {
-        return keyCode(with: source, key: key, carbonModifiers: modifierTransformar.carbonFlags(from: cocoaModifiers))
-    }
-
-    public func keyCodes(with source: InputSource, carbonModifiers: Int = 0) -> [Key: CGKeyCode]? {
-        return layout.keyCodes(with: source, carbonModifiers: carbonModifiers)
-    }
-
-    public func keyCodes(with source: InputSource, cocoaModifiers: NSEvent.ModifierFlags) -> [Key: CGKeyCode]? {
-        return keyCodes(with: source, carbonModifiers: modifierTransformar.carbonFlags(from: cocoaModifiers))
+    func keyCodes(with source: InputSource, modifiers: SauceModifiers = .none) -> [Key: CGKeyCode]? {
+        return layout.keyCodes(with: source, carbonModifiers: modifierTransformar.carbonFlags(from: modifiers))
     }
 }
 
 // MARK: - Key
-extension Sauce {
-    public func key(for keyCode: Int, carbonModifiers: Int = 0) -> Key? {
-        return currentKey(for: keyCode, carbonModifiers: carbonModifiers) ?? Key(QWERTYKeyCode: keyCode)
+public extension Sauce {
+    func key(for keyCode: Int, modifiers: SauceModifiers = .none) -> Key? {
+        return currentKey(for: keyCode, modifiers: modifiers) ?? Key(QWERTYKeyCode: keyCode)
     }
 
-    public func key(for keyCode: Int, cocoaModifiers: NSEvent.ModifierFlags) -> Key? {
-        return key(for: keyCode, carbonModifiers: modifierTransformar.carbonFlags(from: cocoaModifiers))
+    func currentKey(for keyCode: Int, modifiers: SauceModifiers = .none) -> Key? {
+        return layout.currentKey(for: keyCode, carbonModifiers: modifierTransformar.carbonFlags(from: modifiers))
     }
 
-    public func currentKey(for keyCode: Int, carbonModifiers: Int = 0) -> Key? {
-        return layout.currentKey(for: keyCode, carbonModifiers: carbonModifiers)
-    }
-
-    public func currentKey(for keyCode: Int, cocoaModifiers: NSEvent.ModifierFlags) -> Key? {
-        return currentKey(for: keyCode, carbonModifiers: modifierTransformar.carbonFlags(from: cocoaModifiers))
-    }
-
-    public func key(with source: InputSource, keyCode: Int, carbonModifiers: Int = 0) -> Key? {
-        return layout.key(with: source, keyCode: keyCode, carbonModifiers: carbonModifiers)
-    }
-
-    public func key(with source: InputSource, keyCode: Int, cocoaModifiers: NSEvent.ModifierFlags) -> Key? {
-        return key(with: source, keyCode: keyCode, carbonModifiers: modifierTransformar.carbonFlags(from: cocoaModifiers))
+    func key(with source: InputSource, keyCode: Int, modifiers: SauceModifiers = .none) -> Key? {
+        return layout.key(with: source, keyCode: keyCode, carbonModifiers: modifierTransformar.carbonFlags(from: modifiers))
     }
 }
 
 // MARK: - Characters
-extension Sauce {
-    public func character(for keyCode: Int, carbonModifiers: Int) -> String? {
-        return currentCharacter(for: keyCode, carbonModifiers: carbonModifiers) ?? currentASCIICapableCharacter(for: keyCode, carbonModifiers: carbonModifiers)
+public extension Sauce {
+    func character(for keyCode: Int, modifiers: SauceModifiers = .none) -> String? {
+        return currentCharacter(for: keyCode, modifiers: modifiers) ?? currentASCIICapableCharacter(for: keyCode, modifiers: modifiers)
     }
 
-    public func character(for keyCode: Int, cocoaModifiers: NSEvent.ModifierFlags) -> String? {
-        return character(for: keyCode, carbonModifiers: modifierTransformar.carbonFlags(from: cocoaModifiers))
+    func currentCharacter(for keyCode: Int, modifiers: SauceModifiers = .none) -> String? {
+        return layout.currentCharacter(for: keyCode, carbonModifiers: modifierTransformar.carbonFlags(from: modifiers))
     }
 
-    public func currentCharacter(for keyCode: Int, carbonModifiers: Int) -> String? {
-        return layout.currentCharacter(for: keyCode, carbonModifiers: carbonModifiers)
+    func currentASCIICapableCharacter(for keyCode: Int, modifiers: SauceModifiers = .none) -> String? {
+        return layout.currentASCIICapableCharacter(for: keyCode, carbonModifiers: modifierTransformar.carbonFlags(from: modifiers))
     }
 
-    public func currentCharacter(for keyCode: Int, cocoaModifiers: NSEvent.ModifierFlags) -> String? {
-        return currentCharacter(for: keyCode, carbonModifiers: modifierTransformar.carbonFlags(from: cocoaModifiers))
-    }
-
-    public func currentASCIICapableCharacter(for keyCode: Int, carbonModifiers: Int) -> String? {
-        return layout.currentASCIICapableCharacter(for: keyCode, carbonModifiers: carbonModifiers)
-    }
-
-    public func currentASCIICapableCharacter(for keyCode: Int, cocoaModifiers: NSEvent.ModifierFlags) -> String? {
-        return currentASCIICapableCharacter(for: keyCode, carbonModifiers: modifierTransformar.carbonFlags(from: cocoaModifiers))
-    }
-
-    public func character(with source: InputSource, keyCode: Int, carbonModifiers: Int) -> String? {
-        return layout.character(with: source, keyCode: keyCode, carbonModifiers: carbonModifiers)
-    }
-
-    public func character(with source: InputSource, keyCode: Int, cocoaModifiers: NSEvent.ModifierFlags) -> String? {
-        return character(with: source, keyCode: keyCode, carbonModifiers: modifierTransformar.carbonFlags(from: cocoaModifiers))
+    func character(with source: InputSource, keyCode: Int, modifiers: SauceModifiers = .none) -> String? {
+        return layout.character(with: source, keyCode: keyCode, carbonModifiers: modifierTransformar.carbonFlags(from: modifiers))
     }
 }
 #endif
