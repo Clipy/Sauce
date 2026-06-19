@@ -1,5 +1,5 @@
 # Sauce
-![CI](https://github.com/Clipy/Sauce/workflows/Xcode-Build/badge.svg)
+![CI](https://github.com/Clipy/Sauce/workflows/Swift-Build/badge.svg)
 [![Release version](https://img.shields.io/github/release/Clipy/Sauce.svg)](https://github.com/Clipy/Sauce/releases/latest)
 [![License: MIT](https://img.shields.io/github/license/Clipy/Sauce.svg)](https://github.com/Clipy/Sauce/blob/master/LICENSE)
 
