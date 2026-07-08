@@ -129,6 +129,8 @@ public enum Key: String, Codable, Equatable, Sendable {
 
     // MARK: - Initiazlie
     public init?(character: String, virtualKeyCode: Int?) {
+        guard !character.isEmpty else { return nil }
+
         let lowercasedString = character.lowercased()
         switch lowercasedString {
         case "a":
@@ -255,14 +257,12 @@ public enum Key: String, Codable, Equatable, Sendable {
         case "keypadplus",
             "+":
             self = .keypadPlus
-        case "keypadclear",
-            SpecialKeyCode.keypadClear.character.lowercased():
+        case "keypadclear":
             self = .keypadClear
         case "keypaddivide",
             "/" where virtualKeyCode == kVK_ANSI_KeypadDivide:
             self = .keypadDivide
-        case "keypadenter",
-            SpecialKeyCode.keypadEnter.character.lowercased():
+        case "keypadenter":
             self = .keypadEnter
         case "keypadminus",
             "-" where virtualKeyCode == kVK_ANSI_KeypadMinus:
@@ -310,112 +310,76 @@ public enum Key: String, Codable, Equatable, Sendable {
             "keypadnine",
             "9" where virtualKeyCode == kVK_ANSI_Keypad9:
             self = .keypadNine
-        case "return",
-            "\r", // NSMenuItem.keyEquivalent for return key
-            "\n",
-            SpecialKeyCode.return.character.lowercased():
+        case "return":
             self = .return
-        case "tab",
-            SpecialKeyCode.tab.character.lowercased():
+        case "tab":
             self = .tab
         case "space",
-            SpecialKeyCode.space.character.lowercased():
+            " ":
             self = .space
-        case "delete",
-            SpecialKeyCode.delete.character.lowercased():
+        case "delete":
             self = .delete
-        case "escape",
-            SpecialKeyCode.escape.character.lowercased():
+        case "escape":
             self = .escape
-        case "f17",
-            SpecialKeyCode.f17.character.lowercased():
+        case "f17":
             self = .f17
-        case "f18",
-            SpecialKeyCode.f18.character.lowercased():
+        case "f18":
             self = .f18
-        case "f19",
-            SpecialKeyCode.f19.character.lowercased():
+        case "f19":
             self = .f19
-        case "f20",
-            SpecialKeyCode.f20.character.lowercased():
+        case "f20":
             self = .f20
-        case "f5",
-            SpecialKeyCode.f5.character.lowercased():
+        case "f5":
             self = .f5
-        case "f6",
-            SpecialKeyCode.f6.character.lowercased():
+        case "f6":
             self = .f6
-        case "f7",
-            SpecialKeyCode.f7.character.lowercased():
+        case "f7":
             self = .f7
-        case "f3",
-            SpecialKeyCode.f3.character.lowercased():
+        case "f3":
             self = .f3
-        case "f8",
-            SpecialKeyCode.f8.character.lowercased():
+        case "f8":
             self = .f8
-        case "f9",
-            SpecialKeyCode.f9.character.lowercased():
+        case "f9":
             self = .f9
-        case "f11",
-            SpecialKeyCode.f11.character.lowercased():
+        case "f11":
             self = .f11
-        case "f13",
-            SpecialKeyCode.f13.character.lowercased():
+        case "f13":
             self = .f13
-        case "f16",
-            SpecialKeyCode.f16.character.lowercased():
+        case "f16":
             self = .f16
-        case "f14",
-            SpecialKeyCode.f14.character.lowercased():
+        case "f14":
             self = .f14
-        case "f10",
-            SpecialKeyCode.f10.character.lowercased():
+        case "f10":
             self = .f10
-        case "f12",
-            SpecialKeyCode.f12.character.lowercased():
+        case "f12":
             self = .f12
-        case "f15",
-            SpecialKeyCode.f15.character.lowercased():
+        case "f15":
             self = .f15
-        case "help",
-            SpecialKeyCode.help.character.lowercased():
+        case "help":
             self = .help
-        case "home",
-            SpecialKeyCode.home.character.lowercased():
+        case "home":
             self = .home
-        case "pageup",
-            SpecialKeyCode.pageUp.character.lowercased():
+        case "pageup":
             self = .pageUp
-        case "forwarddelete",
-            SpecialKeyCode.forwardDelete.character.lowercased():
+        case "forwarddelete":
             self = .forwardDelete
-        case "f4",
-            SpecialKeyCode.f4.character.lowercased():
+        case "f4":
             self = .f4
-        case "end",
-            SpecialKeyCode.end.character.lowercased():
+        case "end":
             self = .end
-        case "f2",
-            SpecialKeyCode.f2.character.lowercased():
+        case "f2":
             self = .f2
-        case "pagedown",
-            SpecialKeyCode.pageDown.character.lowercased():
+        case "pagedown":
             self = .pageDown
-        case "f1",
-            SpecialKeyCode.f1.character.lowercased():
+        case "f1":
             self = .f1
-        case "leftarrow",
-            SpecialKeyCode.leftArrow.character.lowercased():
+        case "leftarrow":
             self = .leftArrow
-        case "rightarrow",
-            SpecialKeyCode.rightArrow.character.lowercased():
+        case "rightarrow":
             self = .rightArrow
-        case "downarrow",
-            SpecialKeyCode.downArrow.character.lowercased():
+        case "downarrow":
             self = .downArrow
-        case "uparrow",
-            SpecialKeyCode.upArrow.character.lowercased():
+        case "uparrow":
             self = .upArrow
         case "¥":
             self = .yen
@@ -423,11 +387,9 @@ public enum Key: String, Codable, Equatable, Sendable {
             self = .underscore
         case "," where virtualKeyCode == kVK_JIS_KeypadComma:
             self = .keypadComma
-        case "英数",
-            SpecialKeyCode.eisu.character.lowercased():
+        case "英数":
             self = .eisu
-        case "かな",
-            SpecialKeyCode.kana.character.lowercased():
+        case "かな":
             self = .kana
         case "@":
             self = .atSign
@@ -438,7 +400,14 @@ public enum Key: String, Codable, Equatable, Sendable {
         case "§":
             self = .section
         default:
-            return nil
+            let keyCodes = SpecialKeyCode.allCases
+            if let specialKeyCode = keyCodes.first(where: { $0.character.lowercased() == lowercasedString }) {
+                self = .init(specialKeyCode: specialKeyCode)
+            } else if let specialKeyCode = keyCodes.first(where: { $0.appKitKeyEquivalents.contains(lowercasedString) }) {
+                self = .init(specialKeyCode: specialKeyCode)
+            } else {
+                return nil
+            }
         }
     }
 
@@ -884,6 +853,91 @@ public enum Key: String, Codable, Equatable, Sendable {
             return CGKeyCode(kVK_ANSI_Quote)
         case .section:
             return CGKeyCode(kVK_ISO_Section)
+        }
+    }
+}
+
+private extension Key {
+    init(specialKeyCode: SpecialKeyCode) {
+        switch specialKeyCode {
+        case .return:
+            self = .return
+        case .tab:
+            self = .tab
+        case .space:
+            self = .space
+        case .delete:
+            self = .delete
+        case .escape:
+            self = .escape
+        case .f17:
+            self = .f17
+        case .f18:
+            self = .f18
+        case .f19:
+            self = .f19
+        case .f20:
+            self = .f20
+        case .f5:
+            self = .f5
+        case .f6:
+            self = .f6
+        case .f7:
+            self = .f7
+        case .f3:
+            self = .f3
+        case .f8:
+            self = .f8
+        case .f9:
+            self = .f9
+        case .f11:
+            self = .f11
+        case .f13:
+            self = .f13
+        case .f16:
+            self = .f16
+        case .f14:
+            self = .f14
+        case .f10:
+            self = .f10
+        case .f12:
+            self = .f12
+        case .f15:
+            self = .f15
+        case .help:
+            self = .help
+        case .home:
+            self = .home
+        case .pageUp:
+            self = .pageUp
+        case .forwardDelete:
+            self = .forwardDelete
+        case .f4:
+            self = .f4
+        case .end:
+            self = .end
+        case .f2:
+            self = .f2
+        case .pageDown:
+            self = .pageDown
+        case .f1:
+            self = .f1
+        case .leftArrow:
+            self = .leftArrow
+        case .rightArrow:
+            self = .rightArrow
+        case .downArrow:
+            self = .downArrow
+        case .upArrow:
+            self = .upArrow
+        case .eisu:
+            self = .eisu
+        case .kana:
+            self = .kana
+        case .keypadClear:
+            self = .keypadClear
+        case .keypadEnter:
+            self = .keypadEnter
         }
     }
 }

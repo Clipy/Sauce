@@ -9,6 +9,7 @@
 //
 
 #if os(macOS)
+import AppKit
 import Carbon
 import Foundation
 
@@ -20,7 +21,7 @@ import Foundation
  *
  *  UCKeyTranslate can not convert a layout-independent keycode to string.
  **/
-internal enum SpecialKeyCode {
+internal enum SpecialKeyCode: CaseIterable {
     case `return`
     case tab
     case space
@@ -229,6 +230,85 @@ internal enum SpecialKeyCode {
         case .keypadEnter:
             return "⌅"
         }
+    }
+    var appKitKeyEquivalents: [String] {
+        let characters: [Int]
+        switch self {
+        case .return:
+            characters = [NSNewlineCharacter, NSCarriageReturnCharacter]
+        case .tab:
+            characters = [NSTabCharacter, NSBackTabCharacter]
+        case .delete:
+            characters = [NSBackspaceCharacter, NSDeleteCharacter]
+        case .f17:
+            characters = [NSF17FunctionKey]
+        case .f18:
+            characters = [NSF18FunctionKey]
+        case .f19:
+            characters = [NSF19FunctionKey]
+        case .f20:
+            characters = [NSF20FunctionKey]
+        case .f5:
+            characters = [NSF5FunctionKey]
+        case .f6:
+            characters = [NSF6FunctionKey]
+        case .f7:
+            characters = [NSF7FunctionKey]
+        case .f3:
+            characters = [NSF3FunctionKey]
+        case .f8:
+            characters = [NSF8FunctionKey]
+        case .f9:
+            characters = [NSF9FunctionKey]
+        case .f11:
+            characters = [NSF11FunctionKey]
+        case .f13:
+            characters = [NSF13FunctionKey]
+        case .f16:
+            characters = [NSF16FunctionKey]
+        case .f14:
+            characters = [NSF14FunctionKey]
+        case .f10:
+            characters = [NSF10FunctionKey]
+        case .f12:
+            characters = [NSF12FunctionKey]
+        case .f15:
+            characters = [NSF15FunctionKey]
+        case .help:
+            characters = [NSHelpFunctionKey]
+        case .home:
+            characters = [NSHomeFunctionKey]
+        case .pageUp:
+            characters = [NSPageUpFunctionKey]
+        case .forwardDelete:
+            characters = [NSDeleteFunctionKey]
+        case .f4:
+            characters = [NSF4FunctionKey]
+        case .end:
+            characters = [NSEndFunctionKey]
+        case .f2:
+            characters = [NSF2FunctionKey]
+        case .pageDown:
+            characters = [NSPageDownFunctionKey]
+        case .f1:
+            characters = [NSF1FunctionKey]
+        case .leftArrow:
+            characters = [NSLeftArrowFunctionKey]
+        case .rightArrow:
+            characters = [NSRightArrowFunctionKey]
+        case .downArrow:
+            characters = [NSDownArrowFunctionKey]
+        case .upArrow:
+            characters = [NSUpArrowFunctionKey]
+        case .keypadClear:
+            characters = [NSClearLineFunctionKey]
+        case .keypadEnter:
+            characters = [NSEnterCharacter]
+        case .space, .escape, .eisu, .kana:
+            characters = []
+        }
+        return characters.compactMap { UnicodeScalar($0) }
+            .map { String($0) }
     }
 }
 #endif
