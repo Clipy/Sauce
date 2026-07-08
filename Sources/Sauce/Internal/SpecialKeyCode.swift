@@ -13,7 +13,7 @@ import AppKit
 import Carbon
 import Foundation
 
-// swiftlint:disable identifier_name function_body_length
+// swiftlint:disable identifier_name function_body_length type_body_length
 
 /**
  *  keycodes for keys that are independent of keyboard layout
@@ -151,7 +151,7 @@ internal enum SpecialKeyCode: CaseIterable {
     // MARK: - Properties
     var character: String {
         switch self {
-        case .return: 
+        case .return:
             return "↩"
         case .tab:
             return "⇥"
