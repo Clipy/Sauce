@@ -941,4 +941,6 @@ private extension Key {
         }
     }
 }
+
+// swiftlint:enable file_length function_body_length type_body_length identifier_name
 #endif

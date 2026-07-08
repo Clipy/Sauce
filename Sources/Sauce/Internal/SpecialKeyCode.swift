@@ -311,4 +311,6 @@ internal enum SpecialKeyCode: CaseIterable {
             .map { String($0) }
     }
 }
+
+// swiftlint:enable identifier_name function_body_length type_body_length
 #endif
