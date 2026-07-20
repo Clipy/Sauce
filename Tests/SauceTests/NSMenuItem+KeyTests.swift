@@ -27,4 +27,14 @@ struct NSMenuItemKeyTests {
         menuItem.keyEquivalentModifierMask = .shift
         #expect(menuItem.key == .b)
     }
+
+    @Test(.bug("https://github.com/Clipy/Sauce/pull/88"))
+    func enterKeyEquivalentMapsToKeypadEnter() throws {
+        let enterCharacter = try #require(UnicodeScalar(NSEnterCharacter))
+        let menuItem = NSMenuItem()
+        menuItem.keyEquivalent = String(enterCharacter)
+
+        let key = try #require(menuItem.key)
+        #expect(key == .keypadEnter)
+    }
 }

@@ -403,7 +403,7 @@ public enum Key: String, Codable, Equatable, Sendable {
             let keyCodes = SpecialKeyCode.allCases
             if let specialKeyCode = keyCodes.first(where: { $0.character.lowercased() == lowercasedString }) {
                 self = .init(specialKeyCode: specialKeyCode)
-            } else if let specialKeyCode = keyCodes.first(where: { $0.appKitKeyEquivalents.contains(lowercasedString) }) {
+            } else if virtualKeyCode == nil, let specialKeyCode = keyCodes.first(where: { $0.appKitKeyEquivalents.contains(lowercasedString) }) {
                 self = .init(specialKeyCode: specialKeyCode)
             } else {
                 return nil

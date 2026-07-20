@@ -54,6 +54,20 @@ final class KeyboardLayoutTests {
     }
 
     @Test(
+        .inputSource(enableIDs: [ABCKeyboardID], selectIDs: [ABCKeyboardID]),
+        .bug("https://github.com/Clipy/Sauce/issues/89")
+    )
+    func keypadEnterUsesCarbonVirtualKeyCode() throws {
+        let sauce = Sauce()
+
+        let keyCode = sauce.keyCode(for: .keypadEnter)
+        #expect(keyCode == CGKeyCode(kVK_ANSI_KeypadEnter))
+
+        let character = try #require(sauce.character(for: Int(keyCode)))
+        #expect(character == "⌅")
+    }
+
+    @Test(
         .inputSource(enableIDs: [ABCKeyboardID, dvorakKeyboardID], selectIDs: [dvorakKeyboardID])
     )
     func keyCodesForDvorakKeyboard() {
